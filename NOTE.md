@@ -1,3 +1,6 @@
+Provide Lecture Note: Classical Search 
+––––––––––––––––––––––––––––––––––––––
+
 This course introduces a knowledge-based AI agent who can reason and plan. This lesson shows how to use symbols to represent 
 logic and reasoning. Before we move on to the next lesson on the introduction to planning, let's recap what we have learned 
 in this lesson.
