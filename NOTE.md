@@ -1,3 +1,448 @@
+# Uninformed Search
+
+### What Is A Problem?
+
+The route finding problem can be formulated as follows:
+
+Initial state, denoted by S0, is any state that can be designated as the starting point.
+Actions, denoted by: {a1, a2, a3, ...}, is a set of the possible actions available to the agent at any given state.
+Results, denoted by S', is the new stage where the agent ends up after taking an action at a given state.
+Goal Test, denoted by a boolean of True or False, checks whether the current state is the goal state.
+Path Cost is the sum of the cost of the individual steps. In the route finding problem, the cost could be the distance between two cities.
+
+
+With the framework just established for describing search problems, we'll first cover strategies that come under the heading of uninformed search. These strategies have no additional information about states beyond that provided in the problem definition, so they can only proceed by generating successors until they find a goal state. In the next lesson, we'll introduce additional search strategies that can prioritize “more promising” states, called informed search or heuristic search strategies.
+
+This lesson does not include any coding quizzes; instead, you'll find a larger coding exercise at the end of the section.
+
+We will cover the most common types of uninformed search as follows:
+
+Breadth-first Search (BFS) is a search strategy that expands the shallowest unexpanded node first. BFS expands the root node, then explores all the children of the root node, and so on.
+Depth-first Search (DFS) applies a similar search strategy as BFS but expands the deepest node in the current frontier of the search tree. DFS expands the first child of the root node and explores farther to the deepest leaf node.
+Uniform Cost Search (UCS) is a search strategy that expands the successor node with the cheapest cost. In a route finding problem, the cheapest cost could be defined as the shortest distance (in miles) between two cities.
+
+
+<br>   
+   
+![uninformed_search](./images/uninformed_search.png)
+
+<br>
+
+
+### Tree Search
+
+```textmate
+function Tree.Search (problem):
+    frontier = { [initial] }
+    loop:
+        if frontier is empty: return FAIL
+        path = remove.choice(frontier)
+        s = path.end
+        if s is a goal: return path
+        for a in actions:
+            add [path + a > Result(s,a)]
+            to frontier
+```
+
+Clarification: the line, add[path + a > Results(s,a)], is not a mathematical operation. This line appends the current action,a, into the previous path, path. After taking the action, the search agent will be in a new state, Results(s,a). Finally, the algorithm will add the list into the frontier dictionary through add[] function.
+
+
+### Graph Search
+
+Notice the pseudocodes for graph search and tree search algorithms are quite similar. The key difference is that the graph search algorithm keeps track of the explored states, as highlighted in the pseudocode below. Graph search algorithm removes the redundancy to revisit the explored states as it happens in the tree search algorithm.
+
+```textmate
+function Graph.Search (problem):
+   frontier = { [initial] }; explored = { }
+   loop:
+       if frontier is empty: return FAIL
+       path = remove.choice(frontier)
+       s = path.end; add s to explored
+       if s is a goal: return path
+       for a in actions:
+           add [path + a -> Result(s,a)]
+           to frontier 
+           unless Result(s,a) in frontier or explored
+```
+
+# Graph Search Algorithms 
+
+**Basic Concept**
+Graph search is a fundamental approach to solving problems by exploring nodes and their connections. Unlike tree search which might revisit states, graph search keeps track of explored nodes to avoid cycles. Two primary methods are Breadth-First Search (BFS) which explores level by level, and Depth-First Search (DFS) which explores as far as possible along each branch.
+
+**Technical Details**
+The graph search algorithm uses two key data structures:
+1. Frontier: Contains nodes that have been discovered but not yet explored
+2. Explored Set: Keeps track of already visited nodes to prevent cycles
+
+BFS implements the frontier as a queue (FIFO), ensuring nodes are explored in order of their distance from the start. DFS implements the frontier as a stack (LIFO), exploring deeply along one path before backtracking.
+
+**Mathematical Formulation**
+```
+Graph Search Algorithm:
+frontier = { [initial] }; explored = { }
+loop:
+    if frontier is empty: return FAIL
+    path = remove.choice(frontier)
+    s = path.end; add s to explored
+    if s is a goal: return path
+    for a in actions:
+        add [path + a -> Result(s,a)]
+        to frontier 
+        unless Result(s,a) in frontier or explored
+
+Time Complexity:
+- BFS: O(b^d) where b = branching factor, d = depth
+- DFS: O(b^m) where m = maximum depth
+- Space Complexity: O(b*d) for BFS, O(m) for DFS
+
+Completeness:
+BFS: Complete if b is finite
+DFS: Complete in finite spaces with loop detection
+```
+
+This algorithm forms the basis for more advanced search strategies like A* and best-first search, which add heuristic information to guide the exploration.
+
+
+
+# Breadth-First Search (BFS) 
+
+**Basic Concept**
+BFS explores a graph layer by layer, like ripples spreading in a pond. It guarantees finding the shortest path in unweighted graphs by systematically exploring nodes at the current depth before moving to nodes at the next depth level.
+
+**Technical Details**
+BFS uses a FIFO queue as its frontier, ensuring that nodes are explored in order of their distance from the start node. Each level of the graph is completely explored before moving to the next level. This makes it particularly useful for finding shortest paths and in scenarios where the goal may be close to the start.
+
+**Mathematical Formulation**
+```python
+function BFS(start_node):
+    queue = [start_node]
+    visited = {start_node}
+    
+    while queue is not empty:
+        node = queue.dequeue()
+        if node is goal: return SUCCESS
+        
+        for neighbor in node.neighbors:
+            if neighbor not in visited:
+                queue.enqueue(neighbor)
+                visited.add(neighbor)
+                
+Properties:
+- Time Complexity: O(V + E) where V = vertices, E = edges
+- Space Complexity: O(V)
+- Complete: Yes (will find solution if exists)
+- Optimal: Yes (for unweighted graphs)
+```
+
+# Depth-First Search (DFS) 
+
+**Basic Concept**
+DFS explores a graph by going as deep as possible along each branch before backtracking. It's like exploring a maze by following each path to its end before trying alternate routes.
+
+**Technical Details**
+DFS uses a LIFO stack as its frontier, which means it fully explores each path before backtracking. It has a significantly smaller memory footprint compared to BFS as it only needs to store nodes on the current path. However, it may not find the shortest path and can get stuck in infinite paths without proper cycle detection.
+
+**Mathematical Formulation**
+```python
+function DFS(start_node):
+    stack = [start_node]
+    visited = {start_node}
+    
+    while stack is not empty:
+        node = stack.pop()
+        if node is goal: return SUCCESS
+        
+        for neighbor in node.neighbors:
+            if neighbor not in visited:
+                stack.push(neighbor)
+                visited.add(neighbor)
+
+Properties:
+- Time Complexity: O(V + E)
+- Space Complexity: O(h) where h = height of graph
+- Complete: Only with cycle detection
+- Optimal: No guarantee of shortest path
+```
+
+Key Differences:
+- BFS is better for finding shortest paths
+- DFS uses less memory
+- BFS explores breadth-wise (level by level)
+- DFS explores depth-wise (path by path)
+- BFS is complete, DFS needs cycle detection for completeness
+
+
+### Uniform Cost Search
+
+# Uniform Cost Search (UCS) Lecture Notes
+
+**Basic Concept**
+Uniform Cost Search is a variant of Dijkstra's algorithm that finds the least-cost path to a goal node in a weighted graph. Unlike BFS which assumes uniform edge costs, UCS takes into account varying path costs by always expanding the lowest-cost path first, making it optimal for paths with different costs.
+
+**Technical Details**
+UCS uses a priority queue as its frontier, where the priority is determined by the cumulative path cost from the start node. The key difference from BFS is that nodes are explored in order of their total path cost rather than their level in the tree. The algorithm continues until it reaches a goal state, ensuring that the path found is the lowest-cost path to that goal.
+
+**Mathematical Formulation**
+```python
+function UniformCostSearch(problem):
+    frontier = PriorityQueue()
+    frontier.add(path=[initial], priority=0)
+    explored = {}
+    
+    while frontier is not empty:
+        path = frontier.pop()  # Path with lowest cost
+        s = path.end
+        cost = path.cost
+        
+        if s is goal: return path
+        
+        explored.add(s)
+        for action in s.actions:
+            new_path = path + action
+            new_cost = cost + action.cost
+            
+            if new_path.end not in explored and 
+               new_path.end not in frontier:
+                frontier.add(new_path, new_cost)
+            elif new_path.end in frontier with higher cost:
+                frontier.update(new_path, new_cost)
+
+Properties:
+- Time Complexity: O(b^(1 + ⌊C*/ε⌋))
+  where C* = cost of optimal solution
+  ε = minimum action cost
+- Space Complexity: O(b^(1 + ⌊C*/ε⌋))
+- Complete: Yes, if all costs > 0
+- Optimal: Yes, finds least-cost path
+```
+
+Key Features:
+1. Explores paths in order of increasing cost
+2. Guarantees optimal solution when costs are positive
+3. Can be inefficient when many paths have similar costs
+4. More general than BFS but slower
+5. Forms the basis for more advanced algorithms like A*
+
+Common Applications:
+- GPS and navigation systems
+- Network routing protocols
+- Robot path planning
+- Game pathfinding with varying terrain costs
+
+<br>
+
+![search](/images/search.png)
+
+<br>
+
+Depth-First search will expand all the way down one route first to look for a goal. If it cannot find the goal down that path, it turns around to go back to the next-furthest node and searches along that route. It does find the goal down that route, no matter how far, it will terminate.
+
+As a reminder, Cheapest-First and Uniform Cost refer to the same search method and these are optimal. The DFS is not optimal 
+as it will go down the deepest path and if find it, will return it. This is not a good method for planning but its great for
+storage as provided image below. If a path is infinite, the DFS is incomplete but others are not.
+
+<br>
+
+![search](/images/search_2.png)
+
+<br>
+
+# Search Algorithms Comparison
+
+## Overview Note
+
+Search algorithms vary significantly in their space complexity and optimality. Let's examine the key characteristics of three fundamental search strategies.
+
+## Comparison Table
+
+# Search Methods Comparison
+
+| Search Method | Optimal? | Frontier size | Size @ n = 20 | Complete? |
+|--------------|----------|---------------|---------------|-----------|
+| Breadth-First | Yes | 2^n | 1,048,576 | Yes |
+| Cheapest-First | Yes | 2^n | 1,048,576 | Yes |
+| Depth-First | No | n | 20 | No |
+
+This table provides a comprehensive comparison of three fundamental search algorithms, showing:
+- Whether they guarantee optimal solutions
+- Their frontier size complexity
+- A concrete example with n=20
+- Whether they are complete (guaranteed to find a solution if one exists)
+
+BFS and Cheapest-First (UCS) share similar characteristics but differ in their implementation, while DFS trades completeness and optimality for better space efficiency.
+
+## Key Insights
+
+### Space Complexity
+* BFS and Cheapest-First (UCS) have exponential space requirements (2^n)
+* DFS has linear space complexity (n)
+* At n=20, the difference is dramatic: over 1 million nodes vs just 20 nodes
+
+### Optimality
+* Both BFS and Cheapest-First guarantee optimal solutions
+* DFS trades optimality for space efficiency
+* This makes DFS more practical for deep searches where memory is limited
+
+### Practical Implications
+* BFS/UCS are better for problems requiring optimal solutions
+* DFS is better for deep searches or when memory is constrained
+* Space complexity often becomes the deciding factor in real-world applications
+
+## Summary
+While BFS and Cheapest-First guarantee optimal solutions, their exponential space requirements can make them impractical for large problems. DFS, despite not guaranteeing optimality, remains useful due to its modest memory requirements.
+
+
+
+In this lesson, we cover three search strategies that come under the heading of uninformed search. These strategies have no additional information about states beyond that provided in the problem definition, so they can only proceed by generating successors until they find a goal state.
+
+Throughout this lesson, we look into a route finding problem to find the shortest distance from the initial state (Arad) to the goal state (Bucharest). We describe two types of search representations: tree search and graph search. A tree search is a formal description of the available states and actions in the problem in the forms of nodes (states) and edges (actions). The graph search is different from the tree search in which graph search prevents redundancy by going back to the explored states.
+
+We also learn how Breadth-first Search and Uniform Cost Search algorithms work in detail. BFS explores the shallowest nodes, while UCS explores the cheapest cost nodes. We conclude the lessons by comparing the optimality and completeness of the BFS, UCS, and DFS. An algorithm is said to be complete if it guarantees to return a solution if it exists in the state space within a period of time. And the algorithm is optimal if it returns the first solution with the lowest path cost among all the solutions.
+
+In the next lesson, we'll introduce additional search strategies that can prioritize “more promising” states, called informed search or heuristic search strategies.
+
+
+# Informed Search
+
+This next module covers strategies that come under the heading of informed search. These strategies have additional information about search states, so they can guide the search by ranking successors according to some fitness score until they find a goal state.
+
+In this lesson, we will cover the followings:
+
+Introduce informed search algorithms, greedy best-first search and A* search, and how these algorithms are different from the uninformed uniform cost search.
+Show how A* Search algorithm works in a route finding problem.
+Set up the state space to solve a search problem.
+Define the heuristics to reduce the complexity of the problem.
+
+
+### On Uniform Cost
+
+Uniform Cost search - expands out equally in all directions, may expend additional effort getting to a fairly direct path to the goal.
+Greedy best-first search - expands outward toward locations estimated as closer to the goal. If a direct path is available, expends much less effort than Uniform Cost; however, it does not consider any routes in which it may need to temporarily take a further away path in order to arrive at an overall shorter path.
+A Search* - utilizes both of these - will try to optimize with both the shortest path and the goal in mind. 
+
+
+
+# A* Search Algorithm 
+
+A* (A-star) is an informed search algorithm that combines the benefits of both uniform-cost search and greedy best-first search. It uses a heuristic function to guide its search, making it more efficient than uninformed search methods while maintaining optimality under certain conditions.
+
+## Technical Details
+
+### Key Components
+* g(n): Actual cost from start node to current node n
+* h(n): Heuristic estimated cost from node n to goal
+* f(n): Total estimated cost of path through node n
+* f(n) = g(n) + h(n)
+
+### Properties
+* Optimal if h(n) is admissible (never overestimates)
+* Complete if h(n) is consistent (satisfies triangle inequality)
+* More efficient than Dijkstra's algorithm
+* Maintains a priority queue ordered by f(n)
+
+## Mathematical Formulation
+
+```python
+function A*_Search(problem):
+    frontier = PriorityQueue()
+    frontier.add(start, priority=h(start))
+    reached = {start: Node(start, None)}
+    
+    while not frontier.is_empty():
+        node = frontier.pop()
+        if node.is_goal(): return node
+        
+        for child in node.expand():
+            g = node.path_cost + cost(node, child)
+            if child not in reached or g < reached[child].path_cost:
+                reached[child] = Node(child, node, g)
+                frontier.add(child, priority=g + h(child))
+    
+    return failure
+```
+
+## Common Heuristics
+* Manhattan Distance: |x1 - x2| + |y1 - y2|
+* Euclidean Distance: √[(x1 - x2)² + (y1 - y2)²]
+* Diagonal Distance: max(|x1 - x2|, |y1 - y2|)
+
+## Advantages
+1. More efficient than uninformed search
+2. Guarantees optimal path with admissible heuristics
+3. Versatile across many problem domains
+4. Can be modified for different performance needs
+
+## Applications
+* Pathfinding in games
+* Robot navigation
+* Route planning systems
+* Network routing
+* Puzzle solving
+
+## Performance Characteristics
+* Time Complexity: O(b^d) worst case
+* Space Complexity: O(b^d)
+* Performance heavily dependent on heuristic quality
+* Can degenerate to Dijkstra's if h(n) = 0
+
+
+
+<br>   
+   
+![optimistic_heuristic](./images/optimistic_heuristic.png)
+
+<br>
+
+### Vaccum Cleaner State Spaces 
+
+
+There is a total of 8 possible states in this environment as follows:
+
+- 2 possible states of the location property: location A or location B
+- 2 possible states of vacuum cleaner property in each location: True or False
+- 2 possible states of dirt property in each location: True or False
+
+Therefore, the total number of state space is 2 x 2 x 2 = 23 = 8.
+
+
+<br>   
+   
+![vaccum_cleaner](./images/vaccum.png)
+
+<br>
+
+### Vacuum Cleaner States 
+
+1- ⏻ on / off / sleep
+2- 📷 on / off
+3- Brush Height 1 / 2 / 3 / 4 / 5
+4- Extend Positions to 10
+
+
+
+Route finding is a difficult search problem to solve. The problem lies in the fact that we want the optimal route between two nodes without having to explore all possible routes. Informed search algorithms, such as A* Search, employ the strategies that considerably narrow down the state space in the problem’s environment.
+
+Whenever the A *Search algorithm decides on the next node to visit, it computes an estimate of the candidate nodes’ distance to the target. In addition, A* Search uses the edge-weight method made popular by Dijkstra’s algorithm(opens in a new tab). A* Search is basically an informed variation of Dijkstra’s algorithm with the heuristic function.
+
+If you’d like to know more about this algorithm and to see some interactive examples of it in action, have a look at the A* Search tutorial from Red Blob Games(opens in a new tab).
+
+To recap, we cover the following concepts in this lesson:
+
+Informed search algorithms, such as Greedy Best-first Search and A* Search
+Step-by-step A* Search algorithm
+State space and heuristics techniques in informed search algorithms
+
+
+
+<br>   
+   
+![pacman](./images/pacman.png)
+
+<br>
+
+
+
 Provide Lecture Note: Classical Search 
 ––––––––––––––––––––––––––––––––––––––
 
