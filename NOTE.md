@@ -1598,7 +1598,86 @@ Predict-Update Cycle and Planning Graphs in AI Planning
 This approach allows AI systems to plan effectively in real-world scenarios where perfect information is not available,
 and actions may have unpredictable outcomes.
 
+
+
+
+
+
+
 # classical Planning
+
+
+### Classical Planning State Space Representation
+
+A complete assignment is state space where every variable is assigned and a solution is consistent. A partial assignment is state space that assigns values to only some of the variables.
+
+A complete assignment is possible in a deterministic and fully observable environment, such as those in the search problems. However, most environments are stochastic and partially deterministic. Therefore, we use belief state space, which can be complete or partial assignments.
+
+Classical Planning Actions Representation
+A planning agent relies on the action schemas to know what actions are possible in the current state. An action schema consists of
+
+the action name,
+a list of state variables in current space,
+the preconditions to create this action schema possible, and
+the effects after this action is completed.
+An example of an action schema is as follows:
+
+Action (Fly (p, from , to ),  
+	PRECOND:At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to) 
+	EFFECT:¬At(p, from) ∧ At(p, to))
+
+- Schema: Action()
+- Action name: Fly
+- A list of state variables: plane (p), the airport it flies from (from), and the airport it's flying to (to)
+- Preconditions: there is a plane ("Plane(p )") and two airports ("Airport(from)") and "Airport(to)"), the current location of the plane("At(p, from)")
+- Effects: the plane is no longer at previous location ("¬At(p, from)") and plane's new location("At(p, to)")
+
+
+Planning Domain Definition Language (PDDL)
+The writings of planning domains and problems are commonly standardized in a Planning Domain Definition Language (PDDL). A complete PDDL consists of an initialization of the planning domains, the goal of the planning problem, and a set of action schemas.
+
+An example of a PDDL is as follows:
+
+```textmate
+Init(At(C1, SFO) ∧ At(C2, JFK) ∧ At(P1, SFO) ∧ At(P2, JFK) 
+∧ Cargo(C1) ∧ Cargo(C2) ∧ Plane(P1) ∧ Plane(P2)  
+∧ Airport(JFK) ∧ Airport(SFO))
+
+Goal(At(C1, JFK) ∧ At(C2, SFO)) 
+
+Action(Load(c, p, a),
+	PRECOND: At(c, a) ∧ At(p, a) ∧ Cargo(c) ∧ Plane(p) ∧ Airport(a)
+	EFFECT: ¬ At(c, a) ∧ In(c, p)) 
+
+Action(Unload(c, p, a),
+	PRECOND: In(c, p) ∧ At(p, a) ∧ Cargo(c) ∧ Plane(p) ∧ Airport(a)
+	EFFECT: At(c, a) ∧ ¬ In(c, p)) 
+
+Action(Fly(p, from, to),
+	PRECOND: At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to) 	
+	EFFECT: ¬ At(p, from) ∧ At(p, to))
+```
+
+
+### Progression Search
+
+There are two approaches to find possible solutions in the planning problem state space. They are
+
+Progression Search: a forward search from the initial state to the goal state.
+Regression Search: a reverse search from the goal state back to the initial state.
+In a tree search, we stack the nodes from top to bottom (the initial state is set as the root node). In the planning graph, it is common to line up the initial state to the goal state from left to right. In the progression search, we start from the initial node on the left and expand the nodes to the right until we find the possible solutions by reaching the goal states.
+
+While the progression search is commonly used, there are two limitations with this approach:
+
+   1. The graph may explore unnecessary actions. For example, the graph may explore a state where a plane with an empty cargo flies from one airport to another.
+   2. The graph may require large storage as the number of nodes expands exponentially with the number of variables.
+
+In the next video, we will learn how the regression search only considers the relevant action schemas from the goal state.
+
+### Regression Search
+
+The regression search is also known as the relevant-state search. As we have seen in the previous lesson, a complete PDDL includes the action schemas along with the preconditions and effects associated with certain actions. By working backward from the goal state, the regression search will expand only the relevant nodes according to the action schemas. Therefore, the branching factor for the regression search is smaller than the progression search. However, the regression search has a limitation because we cannot apply heuristics to speed up the search back to the initial state.
+
 
 1. State Space Representation:
    a) Complete Assignment:
@@ -1962,37 +2041,36 @@ Regression Search in Planning Problems
 This approach provides an alternative strategy for exploring the planning problem space, particularly useful when the goal
 state is well-defined and there are many potentially irrelevant actions in the problem domain.
 
-Classical Planning - Summary
-––––––––––––––––––––––––––––
 
-In the following project, you will implement a planning graph, which is a special data structure that is optimized to search
-for the solutions for a PDDL.
 
-A planning graph is a directed graph organized into levels: the first level S0 is the initial state, consisting of nodes
-representing each fluent; then the first level A0 consisting of nodes for each possible action from the states in S0; followed
-by the alternating levels of Si and Ai until we reach a termination condition. A planning graph terminates when two consecutive
-levels are identical. At this point, we say that the graph has leveled off.
+### Regression vs Progression
 
-A planning graph is more efficient than progression and regression searches because the graphplan algorithm can eliminate
-conflicting actions within an action layer. The conflicting actions can be prevented by the mutual exclusion (mutex) relationships.
-When the algorithm decides to not taking any action, it is called taking a persistence action, also known as no-op.
+### Planning Graph
+
+
+In the following project, you will implement a planning graph, which is a special data structure that is optimized to search for the solutions for a PDDL.
+
+A planning graph is a directed graph organized into levels: the first level S0 is the initial state, consisting of nodes representing each fluent; then the first level A0 consisting of nodes for each possible action from the states in S0; followed by the alternating levels of Si and Ai until we reach a termination condition. A planning graph terminates when two consecutive levels are identical. At this point, we say that the graph has leveled off.
+
+A planning graph is more efficient than progression and regression searches because the graphplan algorithm can eliminate conflicting actions within an action layer. The conflicting actions can be prevented by the mutual exclusion (mutex) relationships. When the algorithm decides to not taking any action, it is called taking a persistence action, also known as no-op.
 
 There are three possible mutex conditions holds between two actions:
 
-Inconsistent effects: one action negates an effect of the other. For example, Load(Cargo) and the persistence of Unload(Cargo)
-have inconsistent effects because they disagree on the effect Unload(Cargo). Interference: one of the effects of one action
-is the negation of a precondition of the other. For example Fly(p, a, b) interferes with the persistence of At(p, a) by negating
-its precondition. Competing needs: one of the preconditions of one action is mutually exclusive with a precondition of the other.
-For example, Fly(p, a, b) and Fly(p, a, c) are mutex because they compete on the value of the At(p, a) precondition. The planning
-graph is a robust data structure to solve a planning problem. If a solution is not found by the end of the planning graph layer,
-the problem is considered unsolvable.
+   1. Inconsistent effects: one action negates an effect of the other. For example, Load(Cargo) and the persistence of Unload(Cargo) have inconsistent effects because they disagree on the effect Unload(Cargo).
+   2. Interference: one of the effects of one action is the negation of a precondition of the other. For example Fly(p, a, b) interferes with the persistence of At(p, a) by negating its precondition.
+   3. Competing needs: one of the preconditions of one action is mutually exclusive with a precondition of the other. For example, Fly(p, a, b) and Fly(p, a, c) are mutex because they compete on the value of the At(p, a) precondition.
 
-The planning graph can also provide a heuristic estimation, which calculates the cost to reach the goal states. The cost is known
-as the level cost based on the number of layers that the algorithm needs to go through to find the solutions. For example, let’s
-say we have a planning graph with the following alternating layers: S0, A0, S1, A1, S2, A2, S3, A3. If the algorithm finds the
-conjunction goals at S2 and S3, we can say the cost or level-sum heuristic estimation is 5 (=2 + 3).
+The planning graph is a robust data structure to solve a planning problem. If a solution is not found by the end of the planning graph layer, the problem is considered unsolvable.
 
-Additional Planing Topics
+The planning graph can also provide a heuristic estimation, which calculates the cost to reach the goal states. The cost is known as the level cost based on the number of layers that the algorithm needs to go through to find the solutions. For example, let’s say we have a planning graph with the following alternating layers: S0, A0, S1, A1, S2, A2, S3, A3. If the algorithm finds the conjunction goals at S2 and S3, we can say the cost or level-sum heuristic estimation is 5 (=2 + 3).
+
+
+
+# Additional Planing Topics
+
+
+### Plan Space Search
+
 
 Sliding Puzzle Action Schema:
 
