@@ -2072,6 +2072,159 @@ The planning graph can also provide a heuristic estimation, which calculates the
 ### Plan Space Search
 
 
+The action is called "Slide(t,a,b)" where t, a, and b are parameters.
+
+Action (Slide (t,a,b)
+Pre: On(t,a) ∧ Tile(t) ∧ Blank(b)
+     ∧ Adj(a,b))
+EFF: On(t,b) ∧ Blank(a) ∧ 
+     ¬On(t,a) ∧ ¬Blank(b))
+
+
+Preconditions (Pre):
+- On(t,a): Object t is on position a
+- Tile(t): t is a tile
+- Blank(b): Position b is blank/empty
+- Adj(a,b): Positions a and b are adjacent
+
+Effects (EFF):
+- On(t,b): Object t is now on position b
+- Blank(a): Position a becomes blank
+- ¬On(t,a): Object t is no longer on position a
+- ¬Blank(b): Position b is no longer blank
+
+This appears to be a formal representation of a sliding tile puzzle action, where:
+1. You can only slide a tile to an adjacent blank space
+2. When you slide a tile, it moves from its current position to the blank position
+3. The original position becomes blank
+4. The destination is no longer blank
+
+This is written in a logical notation where:
+- ∧ represents AND
+- ¬ represents NOT
+- Capital letters indicate predicates (relations or properties)
+- Lowercase letters represent variables
+
+This kind of formal representation is commonly used in automated planning systems to define valid moves and their consequences in a problem space.
+
+
+### Situation Calculus
+
+Situation Calculus is a logical formalism used in artificial intelligence and robotics to represent and reason about dynamic worlds and actions. It was introduced by John McCarthy in 1963 and further developed by Raymond Reiter and others.
+
+Key concepts of Situation Calculus include:
+
+1. Situations: These represent complete snapshots of the world at a particular moment. Each situation captures the state of all objects and their relationships.
+
+2. Fluents: These are properties or relations that can change over time. They take a situation as their last argument. For example, On(block,table,s) means "block is on table in situation s".
+
+3. Actions: These are functions that transform one situation into another. Each action has:
+   - Preconditions: What must be true for the action to be possible
+   - Effects: How the action changes the world state
+
+4. Result Function: Written as do(action, situation), this represents the new situation that results from performing an action in a given situation.
+
+For example, in your sliding puzzle action from the previous image, we could represent it in situation calculus as:
+
+```
+On(t,a,s) ∧ Tile(t) ∧ Blank(b,s) ∧ Adj(a,b) →
+  [On(t,b,do(slide(t,a,b),s)) ∧ 
+   Blank(a,do(slide(t,a,b),s)) ∧ 
+   ¬On(t,a,do(slide(t,a,b),s)) ∧ 
+   ¬Blank(b,do(slide(t,a,b),s))]
+```
+
+Situation Calculus is particularly useful for:
+- Planning problems
+- Reasoning about action sequences
+- Handling the frame problem (specifying what doesn't change)
+- Representing complex dynamic systems
+
+The main challenge with Situation Calculus is that it can become computationally expensive for complex domains, as the situation terms grow longer with each action.
+
+
+```textmate
+Situation Calculus
+First order logic (FOL)
+
+Actions: objects    Fly(p,x,y)
+Situations: objects    S₀ S'=Result(s,a)
+Poss(a,s)            --Actions(s)--
+SomePrecond(s) ⇒ Poss(a,s)
+
+Plane(p,s) ∧ Airport(x,s) ∧ Airport(y,s) ∧ At(p,x,s) ⇒ Poss(Fly(p,x,y),s)
+```
+
+Situation Calculus using first-order logic, specifically illustrating an airplane flying example:
+
+1. Basic Components:
+   - Actions are represented as objects (e.g., Fly(p,x,y) representing a plane p flying from x to y)
+   - Situations (S₀ is the initial situation, and new situations are created using Result(s,a))
+   - Possibility axiom Poss(a,s) indicating when actions are possible
+
+2. The main formula at the bottom describes when flying is possible:
+   - Plane(p,s): p is a plane in situation s
+   - Airport(x,s): x is an airport in situation s
+   - Airport(y,s): y is an airport in situation s
+   - At(p,x,s): plane p is at location x in situation s
+   - When all these conditions are met, it's possible for the plane to fly from x to y (Poss(Fly(p,x,y),s))
+
+3. The notation shows how preconditions are structured:
+   - The ∧ symbol represents logical AND
+   - The ⇒ symbol represents logical implication (if-then)
+   - Each predicate includes a situation parameter s to specify when the condition holds
+
+This formalization allows for reasoning about actions and their effects in a dynamic world, particularly useful for automated planning systems.
+
+
+```textmate
+Situation Calculus
+Successor - State Axioms
+
+At(p,x,s)
+∀a, s Poss(a,s) ⇒ (fluent true ⇔ a made it true
+                                ∨ a didn't undo)
+Poss(a,s) ⇒ In(c,p,result(s,a)) ⇔ 
+    (a=Load(c,p,x) ∨ (In(c,p,s)
+                      a≠Unload(c,p,x)))
+
+Initial state: S₀
+    At(P₁,JFK,S₀)    ∀c Cargo(c)⇒ 
+                         At(c,JFK,S₀)
+Goal    ∃s ∀c    Cargo(c)⇒ At(c,SFO,s)
+```
+
+### Situation Calculus: Successor - State Axioms
+
+Once we've described this in the ordinary language of first order logic. We don't need any special programs to manipulate it and come up with the solution. Because we already have theorem provers for first order logic
+
+This example shows a cargo transportation problem using Situation Calculus. Let me break it down:
+
+1. Successor State Axioms:
+   - These describe how fluents (changeable properties) evolve after actions
+   - The general form states that a fluent is true if an action made it true or if it was already true and wasn't undone
+
+2. The Cargo Problem:
+   - Initial State: 
+     * Plane P₁ is at JFK airport
+     * All cargo starts at JFK airport
+   - Goal State: 
+     * All cargo should end up at SFO (San Francisco airport)
+
+3. Action Effects:
+   - Load(c,p,x): Loading cargo c into plane p at location x
+   - Unload(c,p,x): Unloading cargo c from plane p at location x
+   - The In(c,p,s) predicate tracks whether cargo c is in plane p in situation s
+
+4. Key Advantage (from Image 2):
+   - By expressing the problem in first-order logic, we can use existing theorem provers
+   - No need for special-purpose programs
+   - The formal logical representation allows for automated reasoning
+
+This formalization enables automated planning systems to find sequences of actions (loading, flying, unloading) that will achieve the goal of moving all cargo from JFK to SFO.
+
+
+
 Sliding Puzzle Action Schema:
 
 1. Action: Slide(t,a,b)
@@ -2245,102 +2398,3 @@ Note that the pseudocode is _accurate_, but it isn't necessarily _efficient_ to 
 ## LevelCost
 
 The level cost is a helper function used by MaxLevel and LevelSum. The level cost of a goal is equal to the level number of the first literal layer in the planning graph where the goal literal appears.
-
----
-
-**function** LevelCost(_graph_, _goal_) **returns** a value  
-&emsp;**inputs:**  
-&emsp;&emsp;_graph_, a leveled planning graph  
-&emsp;&emsp;_goal_, a literal that is a goal in the planning graph
-
-&emsp;**for each** _layer<sub>i_ in _graph.literalLayers_ **do**  
-&emsp;&emsp;**if** _goal_ in _layer<sub>i_ **then return** i
-
----
-
-## MaxLevel
-
-> The max-level heuristic simply takes the maximum level cost of any of the goals; this is admissible, but not necessarily accurate.
-
-&emsp;—AIMA Chapter 10
-
----
-
-**function** MaxLevel(_graph_) **returns** a value  
-&emsp;**inputs:**  
-&emsp;&emsp;_graph_, an initialized (unleveled) planning graph
-
-&emsp;_costs_ = []  
-&emsp;_graph_.fill() _/* fill the planning graph until it levels off */_  
-&emsp;**for each** _goal_ in _graph.goalLiterals_ **do**  
-&emsp;&emsp;_costs_.append(**LevelCost**(_graph_, _goal_))  
-&emsp;**return max**(_costs_)
-
----
-
-## LevelSum
-
-> The level sum heuristic, following the subgoal independence assumption, returns the sum of the level costs of the goals; this can be inadmissible but works well in practice for problems that are largely decomposable.
-
-&emsp;—AIMA Chapter 10
-
----
-
-**function** LevelSum(_graph_) **returns** a value  
-&emsp;**inputs:**  
-&emsp;&emsp;_graph_, an initialized (unleveled) planning graph
-
-&emsp;_costs_ = []  
-&emsp;_graph_.fill() _/* fill the planning graph until it levels off */_  
-&emsp;**for each** _goal_ in _graph.goalLiterals_ **do**  
-&emsp;&emsp;_costs_.append(**LevelCost**(_graph_, _goal_))  
-&emsp;**return sum**(_costs_)
-
----
-
-## SetLevel
-
-> The set-level heuristic finds the level at which all the literals in the conjunctive goal appear in the planning graph without any pair of them being mutually exclusive.
-
-&emsp;—AIMA Chapter 10
-
----
-
-**function** SetLevel(_graph_) **returns** a value  
-&emsp;**inputs:**  
-&emsp;&emsp;_graph_, an initialized (unleveled) planning graph
-
-&emsp;_graph_.fill() _/* fill the planning graph until it levels off */_  
-&emsp;**for** _layer<sub>i_ in _graph.literalLayers_ **do**  
-&emsp;&emsp;_allGoalsMet_ <- _true_  
-&emsp;&emsp;**for each** _goal_ in _graph.goalLiterals_ **do**  
-&emsp;&emsp;&emsp;**if** _goal_ not in _layer<sub>i_ **then** _allGoalsMet_ <- _false_  
-&emsp;&emsp;**if** not _allGoalsMet_ **then** continue
-
-&emsp;&emsp;_goalsAreMutex_ <- _false_  
-&emsp;&emsp;**for each** _goalA_ in _graph.goalLiterals_ **do**  
-&emsp;&emsp;&emsp;**for each** _goalB_ in _graph.goalLiterals_ **do**  
-&emsp;&emsp;&emsp;&emsp;**if** _layer<sub>i_.isMutex(_goalA_, _goalB_) **then** _goalsAreMutex_ <- _true_  
-&emsp;&emsp;**if** not _goalsAreMutex_ **then return** _i_
-
----
-
-## Improving Efficiency
-
-These heuristics can be made _much_ more efficient by incrementally growing the graph rather than building until it levels off. A straightforward implementation of the alternate MaxLevel pseudocode shown below is at least 2x faster than the simple version above.
-
----
-
-**function** MaxLevel(_graph_) **returns** a value  
-&emsp;**inputs:** _graph_, an initialized (unleveled) planning graph
-
-&emsp;_i_ <- 0  
-&emsp;**loop until** _graph_.isLeveled **do**  
-&emsp;&emsp;_allGoalsMet_ <- true  
-&emsp;&emsp;**for each** _goal_ in _graph.goalLiterals_ **do**  
-&emsp;&emsp;&emsp;**if** _goal_ not in _graph_.getLastLiteralLayer() **then** _allGoalsMet_ <- false  
-&emsp;&emsp;**if** _allGoalsMet_ **then return** _i_  
-&emsp;&emsp;**else** _graph_.extend() /_ add the next literal layer _/  
-&emsp;&emsp;_i_ <- _i_ + 1
-
----
