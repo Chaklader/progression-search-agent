@@ -533,27 +533,19 @@ Whenever the A\* Search algorithm decides on the next node to visit, it computes
 <br>
 <br>
 
-### Provide Lecture Note: Classical Search
+## Classical Search
 
+<br>
 
-This course introduces a knowledge-based AI agent who can reason and plan. This lesson shows how to use symbols to represent
-logic and reasoning. Before we move on to the next lesson on the introduction to planning, let's recap what we have learned
-in this lesson.
+This course introduces a knowledge-based AI agent who can reason and plan and will discuss how to use symbols to represent logic and reasoning. A problem-solving AI agent does not store knowledge about the world. The agent relies on the algorithms, such as Constraint Satisfaction Problem and Search, to find the solutions in state space. A knowledge-based AI agent, however, has full or partial knowledge about the world and can make inferences from the knowledge.
 
-As we have seen in the previous course, a problem-solving AI agent does not store knowledge about the world. The agent relies
-on the algorithms, such as Constraint Satisfaction Problem and Search, to find the solutions in state space. A knowledge-based
-AI agent, however, has full or partial knowledge about the world and can make inferences from the knowledge.
+For a knowledge-based AI agent to be able to reason and plan, they must apply logic to the knowledge about the world. The simplest form of logic is **Propositional Logic**. **Propositional logic** is the simplest language consisting of symbols and logical connectives. But it can only handle boolean propositions, which are **True**, **False** or **Unknown**.
 
-For a knowledge-based AI agent to be able to reason and plan, they must apply logic to the knowledge about the world. The
-simplest form of logic is Propositional Logic. Propositional logic is the simplest language consisting of symbols and logical
-connectives. But it can only handle boolean propositions, which are True, False or Unknown.
-
-We moved on to learn First Order Logic, which can help the knowledge-based agents to learn about the knowledge of the world
-through the more powerful knowledge representations. FOL is built around objects and relations. It also has universal and
-existential quantifiers to construct assertions about all or some of the possible values of the quantified variables.
-
-In the next lesson, we will learn how to define problems so our knowledge-based AI agents can plan to solve the problems
+Knowledge-based agents use **First Order Logic (FOL)** to learn about the knowledge of the world and to reason through the more powerful knowledge representations. **FOL** is built around objects and relations. It also has universal and existential quantifiers to construct assertions about all or some of the possible values of the quantified variables. We will also learn how to define problems so our knowledge-based AI agents can plan to solve the problems
 through explicit propositional and relations between states and actions.
+
+<br>
+<br>
 
 ### Propositional Logic
 
