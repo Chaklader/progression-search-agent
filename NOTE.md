@@ -557,14 +557,18 @@ State space and heuristics techniques in informed search algorithms
 
 
 
+<br>
+<br>
 
+# COURSE-3: Automated Planning
 
-# Automated Planning
+<br>
+<br>
 
+# CHAPTER-1: Symbolic Logic and Reasoning
 
-
-# Symbolic Logic and Reasoning
-
+<br>
+<br>
 
 ### Provide Lecture Note: Classical Search
 
@@ -1247,9 +1251,12 @@ This captures both horizontal and vertical adjacency, which are the two types of
 adjacency, which isn't typically considered in chess movements except for specific pieces).
 
 
+<br>
+<br>
 
+# CHAPTER-2: Introduction to Planning
 
-# Introduction to Planning
+<br>
 
 ### Planning VS Execution
 
