@@ -1,24 +1,28 @@
-# Uninformed Search
+# COURSE-2: CLASSICAL SEARCH 
+
+<br>
+<br>
+
+# CHAPTER-2: Uninformed Search
+
+<br>
+<br>
 
 ### What Is A Problem?
 
-The route finding problem can be formulated as follows:
+<br>
 
-Initial state, denoted by S0, is any state that can be designated as the starting point.
-Actions, denoted by: {a1, a2, a3, ...}, is a set of the possible actions available to the agent at any given state.
-Results, denoted by S', is the new stage where the agent ends up after taking an action at a given state.
-Goal Test, denoted by a boolean of True or False, checks whether the current state is the goal state.
-Path Cost is the sum of the cost of the individual steps. In the route finding problem, the cost could be the distance between two cities.
+The route finding problem can be formulated as with the following components: Initial state, denoted by S0, is any state that can be designated as the starting point. Actions, denoted by: {a1, a2, a3, ...}, is a set of the possible actions available to the agent at any given state.Results, denoted by S', is the new stage where the agent ends up after taking an action at a given state. Goal Test, denoted by a boolean of True or False, checks whether the current state is the goal state. Path Cost is the sum of the cost of the individual steps. In the route finding problem, the cost could be the distance between two cities.
 
-With the framework just established for describing search problems, we'll first cover strategies that come under the heading of uninformed search. These strategies have no additional information about states beyond that provided in the problem definition, so they can only proceed by generating successors until they find a goal state. In the next lesson, we'll introduce additional search strategies that can prioritize “more promising” states, called informed search or heuristic search strategies.
+With the framework just established for describing search problems, we'll first cover strategies that come under the heading of uninformed search. These strategies have no additional information about states beyond that provided in the problem definition, so they can only proceed by generating successors until they find a goal state. Later, we'll introduce additional search strategies that can prioritize “more promising” states, called **informed search** or **heuristic search strategies**.
 
-This lesson does not include any coding quizzes; instead, you'll find a larger coding exercise at the end of the section.
+<br>
 
-We will cover the most common types of uninformed search as follows:
+Most common types of uninformed search are:
 
-Breadth-first Search (BFS) is a search strategy that expands the shallowest unexpanded node first. BFS expands the root node, then explores all the children of the root node, and so on.
-Depth-first Search (DFS) applies a similar search strategy as BFS but expands the deepest node in the current frontier of the search tree. DFS expands the first child of the root node and explores farther to the deepest leaf node.
-Uniform Cost Search (UCS) is a search strategy that expands the successor node with the cheapest cost. In a route finding problem, the cheapest cost could be defined as the shortest distance (in miles) between two cities.
+1. Breadth-first Search (BFS) is a search strategy that expands the shallowest unexpanded node first. BFS expands the root node, then explores all the children of the root node, and so on.
+2. Depth-first Search (DFS) applies a similar search strategy as BFS but expands the deepest node in the current frontier of the search tree. DFS expands the first child of the root node and explores farther to the deepest leaf node.
+3. Uniform Cost Search (UCS) is a search strategy that expands the successor node with the cheapest cost. In a route finding problem, the cheapest cost could be defined as the shortest distance (in miles) between two cities.
 
 <br>   
    
@@ -26,9 +30,12 @@ Uniform Cost Search (UCS) is a search strategy that expands the successor node w
 
 <br>
 
-### Tree Search
 
-```textmate
+### Algorithm for Tree Search
+
+<br>
+
+```
 function Tree.Search (problem):
     frontier = { [initial] }
     loop:
@@ -41,13 +48,21 @@ function Tree.Search (problem):
             to frontier
 ```
 
-Clarification: the line, add[path + a > Results(s,a)], is not a mathematical operation. This line appends the current action,a, into the previous path, path. After taking the action, the search agent will be in a new state, Results(s,a). Finally, the algorithm will add the list into the frontier dictionary through add[] function.
+<br>
+
+The line, add[path + a > Results(s,a)], is not a mathematical operation. This line appends the current action,a, into the previous path, path. After taking the action, the search agent will be in a new state, Results(s,a). Finally, the algorithm will add the list into the frontier dictionary through add[] function.
+
+<br>
 
 ### Graph Search
 
-Notice the pseudocodes for graph search and tree search algorithms are quite similar. The key difference is that the graph search algorithm keeps track of the explored states, as highlighted in the pseudocode below. Graph search algorithm removes the redundancy to revisit the explored states as it happens in the tree search algorithm.
+<br>
 
-```textmate
+The pseudocodes for graph search and tree search algorithms are quite similar. The key difference is that the graph search algorithm keeps track of the explored states, as highlighted in the pseudocode. Graph search algorithm removes the redundancy to revisit the explored states as it happens in the tree search algorithm.
+
+<br>
+
+```
 function Graph.Search (problem):
    frontier = { [initial] }; explored = { }
    loop:
@@ -61,23 +76,34 @@ function Graph.Search (problem):
            unless Result(s,a) in frontier or explored
 ```
 
-# Graph Search Algorithms
+<br>
+<br>
+
+## Graph Search Algorithms
+
+<br>
 
 **Basic Concept**
-Graph search is a fundamental approach to solving problems by exploring nodes and their connections. Unlike tree search which might revisit states, graph search keeps track of explored nodes to avoid cycles. Two primary methods are Breadth-First Search (BFS) which explores level by level, and Depth-First Search (DFS) which explores as far as possible along each branch.
+
+Graph search is a fundamental approach to solving problems by exploring nodes and their connections. Unlike tree search which might revisit states, graph search keeps track of explored nodes to avoid cycles. Two primary methods are **Breadth-First Search (BFS)** which explores level by level, and **Depth-First Search (DFS)** which explores as far as possible along each branch.
 
 **Technical Details**
+
 The graph search algorithm uses two key data structures:
 
-1. Frontier: Contains nodes that have been discovered but not yet explored
-2. Explored Set: Keeps track of already visited nodes to prevent cycles
+1. **Frontier**: Contains nodes that have been discovered but not yet explored
+2. **Explored Set**: Keeps track of already visited nodes to prevent cycles
 
 BFS implements the frontier as a queue (FIFO), ensuring nodes are explored in order of their distance from the start. DFS implements the frontier as a stack (LIFO), exploring deeply along one path before backtracking.
 
+<br>
+<br>
+
 **Mathematical Formulation**
 
+<br>
+
 ```
-Graph Search Algorithm:
 frontier = { [initial] }; explored = { }
 loop:
     if frontier is empty: return FAIL
@@ -88,30 +114,46 @@ loop:
         add [path + a -> Result(s,a)]
         to frontier
         unless Result(s,a) in frontier or explored
+```
 
-Time Complexity:
+<br>
+
+**Time Complexity:**
+
 - BFS: O(b^d) where b = branching factor, d = depth
 - DFS: O(b^m) where m = maximum depth
 - Space Complexity: O(b*d) for BFS, O(m) for DFS
 
-Completeness:
-BFS: Complete if b is finite
-DFS: Complete in finite spaces with loop detection
-```
+**Completeness:**
+
+- BFS: Complete if b is finite
+- DFS: Complete in finite spaces with loop detection
+
+<br>
+<br>
 
 This algorithm forms the basis for more advanced search strategies like A\* and best-first search, which add heuristic information to guide the exploration.
 
-# Breadth-First Search (BFS)
+<br>
+<br>
+
+## Breadth-First Search (BFS)
+
+<br>
 
 **Basic Concept**
+
 BFS explores a graph layer by layer, like ripples spreading in a pond. It guarantees finding the shortest path in unweighted graphs by systematically exploring nodes at the current depth before moving to nodes at the next depth level.
 
 **Technical Details**
+
 BFS uses a FIFO queue as its frontier, ensuring that nodes are explored in order of their distance from the start node. Each level of the graph is completely explored before moving to the next level. This makes it particularly useful for finding shortest paths and in scenarios where the goal may be close to the start.
 
 **Mathematical Formulation**
 
-```python
+<br>
+
+```
 function BFS(start_node):
     queue = [start_node]
     visited = {start_node}
@@ -124,25 +166,40 @@ function BFS(start_node):
             if neighbor not in visited:
                 queue.enqueue(neighbor)
                 visited.add(neighbor)
+```
 
-Properties:
+<br>
+<br>
+
+**Properties:**
+
 - Time Complexity: O(V + E) where V = vertices, E = edges
 - Space Complexity: O(V)
 - Complete: Yes (will find solution if exists)
 - Optimal: Yes (for unweighted graphs)
-```
 
-# Depth-First Search (DFS)
+<br>
+<br>
+
+## Depth-First Search (DFS)
+
+<br>
 
 **Basic Concept**
+
 DFS explores a graph by going as deep as possible along each branch before backtracking. It's like exploring a maze by following each path to its end before trying alternate routes.
 
 **Technical Details**
+
 DFS uses a LIFO stack as its frontier, which means it fully explores each path before backtracking. It has a significantly smaller memory footprint compared to BFS as it only needs to store nodes on the current path. However, it may not find the shortest path and can get stuck in infinite paths without proper cycle detection.
+
+<br>
 
 **Mathematical Formulation**
 
-```python
+<br>
+
+```
 function DFS(start_node):
     stack = [start_node]
     visited = {start_node}
@@ -155,15 +212,19 @@ function DFS(start_node):
             if neighbor not in visited:
                 stack.push(neighbor)
                 visited.add(neighbor)
+```
 
-Properties:
+<br>
+<br>
+
+**Properties:**
+
 - Time Complexity: O(V + E)
 - Space Complexity: O(h) where h = height of graph
 - Complete: Only with cycle detection
 - Optimal: No guarantee of shortest path
-```
 
-Key Differences:
+**Key Differences:**
 
 - BFS is better for finding shortest paths
 - DFS uses less memory
@@ -171,19 +232,24 @@ Key Differences:
 - DFS explores depth-wise (path by path)
 - BFS is complete, DFS needs cycle detection for completeness
 
-### Uniform Cost Search
+<br>
+<br>
 
-# Uniform Cost Search (UCS) Lecture Notes
+## Uniform Cost Search (UCS)
+
+<br>
 
 **Basic Concept**
+
 Uniform Cost Search is a variant of Dijkstra's algorithm that finds the least-cost path to a goal node in a weighted graph. Unlike BFS which assumes uniform edge costs, UCS takes into account varying path costs by always expanding the lowest-cost path first, making it optimal for paths with different costs.
 
 **Technical Details**
+
 UCS uses a priority queue as its frontier, where the priority is determined by the cumulative path cost from the start node. The key difference from BFS is that nodes are explored in order of their total path cost rather than their level in the tree. The algorithm continues until it reaches a goal state, ensuring that the path found is the lowest-cost path to that goal.
 
 **Mathematical Formulation**
 
-```python
+```
 function UniformCostSearch(problem):
     frontier = PriorityQueue()
     frontier.add(path=[initial], priority=0)
@@ -206,17 +272,22 @@ function UniformCostSearch(problem):
                 frontier.add(new_path, new_cost)
             elif new_path.end in frontier with higher cost:
                 frontier.update(new_path, new_cost)
+```
 
-Properties:
+<br>
+<br>
+
+**Properties:**
+
 - Time Complexity: O(b^(1 + ⌊C*/ε⌋))
   where C* = cost of optimal solution
   ε = minimum action cost
 - Space Complexity: O(b^(1 + ⌊C*/ε⌋))
 - Complete: Yes, if all costs > 0
 - Optimal: Yes, finds least-cost path
-```
 
-Key Features:
+
+**Key Features:**
 
 1. Explores paths in order of increasing cost
 2. Guarantees optimal solution when costs are positive
@@ -224,7 +295,9 @@ Key Features:
 4. More general than BFS but slower
 5. Forms the basis for more advanced algorithms like A\*
 
-Common Applications:
+<br>
+
+**Common Applications:**
 
 - GPS and navigation systems
 - Network routing protocols
@@ -233,37 +306,69 @@ Common Applications:
 
 <br>
 
+<br>
+<br>
+
 ![search](/images/search.png)
 
 <br>
 
-Depth-First search will expand all the way down one route first to look for a goal. If it cannot find the goal down that path, it turns around to go back to the next-furthest node and searches along that route. It does find the goal down that route, no matter how far, it will terminate.
 
-As a reminder, Cheapest-First and Uniform Cost refer to the same search method and these are optimal. The DFS is not optimal
-as it will go down the deepest path and if find it, will return it. This is not a good method for planning but its great for
-storage as provided image below. If a path is infinite, the DFS is incomplete but others are not.
+This image illustrates **3** different tree traversal or search strategies commonly used in computer science and artificial intelligence:
 
+1. Breadth-First (Left):
+- Explores all nodes at the current depth level before moving to nodes at the next depth level
+- Moves horizontally through the tree, level by level
+- No costs/weights shown as it treats all paths equally
+
+2. Cheapest-First (AKA Uniform Cost Search, UCS) (Middle):
+- Similar to Dijkstra's algorithm or Uniform Cost Search
+- Shows edge costs/weights (numbers on edges: 5, 2, 3, 2, 4, 2)
+- Explores paths based on cumulative cost, prioritizing the cheapest total path
+- Numbers represent the cost to traverse each edge
+
+3. Depth-First (Right):
+- Explores a path all the way down to a leaf before backtracking
+- Moves vertically through the tree, going as deep as possible before exploring siblings
+- No costs/weights shown as it prioritizes depth over cost
+
+<br>
+
+All **3** trees have the same structure (a binary tree with 3 levels and 7 nodes total), but they represent different strategies for exploring or searching through the tree structure. The choice between these strategies depends on the specific problem requirements, such as whether finding the shortest path is important (Cheapest-First), memory constraints (Depth-First uses less memory), or ensuring the shortest number of steps to a goal (Breadth-First).
+
+<br>
+<br>
+
+
+Depth-First search will expand all the way down one route first to look for a goal. If it cannot find the goal down that path, it turns around to go back to the next-furthest node and searches along that route. It does find the goal down that route, no matter how far, it will terminate. Cheapest-First and Uniform Cost refer to the same search method and these are optimal. The DFS is not optimal as it will go down the deepest path and if find it, will return it. This is not a good method for planning but its great for storage as provided image below. If a path is infinite, the DFS is incomplete but others are not.
+
+<br>
 <br>
 
 ![search](/images/search_2.png)
 
 <br>
+<br>
 
-# Search Algorithms Comparison
 
-## Overview Note
+### Search Algorithms Comparison
+
 
 Search algorithms vary significantly in their space complexity and optimality. Let's examine the key characteristics of three fundamental search strategies.
 
-## Comparison Table
 
-# Search Methods Comparison
+### Search Methods Comparison
 
+```
 | Search Method  | Optimal? | Frontier size | Size @ n = 20 | Complete? |
 | -------------- | -------- | ------------- | ------------- | --------- |
 | Breadth-First  | Yes      | 2^n           | 1,048,576     | Yes       |
 | Cheapest-First | Yes      | 2^n           | 1,048,576     | Yes       |
 | Depth-First    | No       | n             | 20            | No        |
+```
+
+<br>
+<br>
 
 This table provides a comprehensive comparison of three fundamental search algorithms, showing:
 
@@ -273,6 +378,8 @@ This table provides a comprehensive comparison of three fundamental search algor
 - Whether they are complete (guaranteed to find a solution if one exists)
 
 BFS and Cheapest-First (UCS) share similar characteristics but differ in their implementation, while DFS trades completeness and optimality for better space efficiency.
+
+<br>
 
 ## Key Insights
 
@@ -294,19 +401,20 @@ BFS and Cheapest-First (UCS) share similar characteristics but differ in their i
 - DFS is better for deep searches or when memory is constrained
 - Space complexity often becomes the deciding factor in real-world applications
 
+<br>
+<br>
+
 ## Summary
 
-While BFS and Cheapest-First guarantee optimal solutions, their exponential space requirements can make them impractical for large problems. DFS, despite not guaranteeing optimality, remains useful due to its modest memory requirements.
+While BFS and Cheapest-First guarantee optimal solutions, their exponential space requirements can make them impractical for large problems. DFS, despite not guaranteeing optimality, remains useful due to its modest memory requirements. The three search strategies that come under the heading of uninformed search. These strategies have no additional information about states beyond that provided in the problem definition, so they can only proceed by generating successors until they find a goal state. We describe two types of search representations: **tree search** and **graph search**. A tree search is a formal description of the available states and actions in the problem in the forms of nodes (states) and edges (actions). The graph search is different from the tree search in which graph search prevents redundancy by going back to the explored states.
 
-In this lesson, we cover three search strategies that come under the heading of uninformed search. These strategies have no additional information about states beyond that provided in the problem definition, so they can only proceed by generating successors until they find a goal state.
+<br>
+<br>
 
-Throughout this lesson, we look into a route finding problem to find the shortest distance from the initial state (Arad) to the goal state (Bucharest). We describe two types of search representations: tree search and graph search. A tree search is a formal description of the available states and actions in the problem in the forms of nodes (states) and edges (actions). The graph search is different from the tree search in which graph search prevents redundancy by going back to the explored states.
+# CHAPTER-3: Informed Search
 
-We also learn how Breadth-first Search and Uniform Cost Search algorithms work in detail. BFS explores the shallowest nodes, while UCS explores the cheapest cost nodes. We conclude the lessons by comparing the optimality and completeness of the BFS, UCS, and DFS. An algorithm is said to be complete if it guarantees to return a solution if it exists in the state space within a period of time. And the algorithm is optimal if it returns the first solution with the lowest path cost among all the solutions.
-
-In the next lesson, we'll introduce additional search strategies that can prioritize “more promising” states, called informed search or heuristic search strategies.
-
-# Informed Search
+<br>
+<br>
 
 This next module covers strategies that come under the heading of informed search. These strategies have additional information about search states, so they can guide the search by ranking successors according to some fitness score until they find a goal state.
 
