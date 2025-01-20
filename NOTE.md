@@ -416,33 +416,26 @@ While BFS and Cheapest-First guarantee optimal solutions, their exponential spac
 <br>
 <br>
 
-This next module covers strategies that come under the heading of informed search. These strategies have additional information about search states, so they can guide the search by ranking successors according to some fitness score until they find a goal state.
+Informed search strategies have additional information about search states, so they can guide the search by ranking successors according to some fitness score until they find a goal state. Informed search strategies include:
 
-In this lesson, we will cover the followings:
+<br>
 
-Introduce informed search algorithms, greedy best-first search and A* search, and how these algorithms are different from the uninformed uniform cost search.
-Show how A* Search algorithm works in a route finding problem.
-Set up the state space to solve a search problem.
-Define the heuristics to reduce the complexity of the problem.
+1. **Uniform Cost search** - expands out equally in all directions, may expend additional effort getting to a fairly direct path to the goal.
+2. **Greedy best-first search** - expands outward toward locations estimated as closer to the goal. If a direct path is available, expends much less effort than Uniform Cost; however, it does not consider any routes in which it may need to temporarily take a further away path in order to arrive at an overall shorter path.
+3. **A\* Search** - utilizes both of these - will try to optimize with both the shortest path and the goal in mind.
 
-### On Uniform Cost
 
-Uniform Cost search - expands out equally in all directions, may expend additional effort getting to a fairly direct path to the goal.
-Greedy best-first search - expands outward toward locations estimated as closer to the goal. If a direct path is available, expends much less effort than Uniform Cost; however, it does not consider any routes in which it may need to temporarily take a further away path in order to arrive at an overall shorter path.
-A Search\* - utilizes both of these - will try to optimize with both the shortest path and the goal in mind.
-
-# A\* Search Algorithm
+## A\* Search Algorithm
 
 A\* (A-star) is an informed search algorithm that combines the benefits of both uniform-cost search and greedy best-first search. It uses a heuristic function to guide its search, making it more efficient than uninformed search methods while maintaining optimality under certain conditions.
 
-## Technical Details
 
 ### Key Components
 
 - g(n): Actual cost from start node to current node n
 - h(n): Heuristic estimated cost from node n to goal
 - f(n): Total estimated cost of path through node n
-- f(n) = g(n) + h(n)
+- **f(n) = g(n) + h(n)**
 
 ### Properties
 
@@ -450,27 +443,6 @@ A\* (A-star) is an informed search algorithm that combines the benefits of both 
 - Complete if h(n) is consistent (satisfies triangle inequality)
 - More efficient than Dijkstra's algorithm
 - Maintains a priority queue ordered by f(n)
-
-## Mathematical Formulation
-
-```python
-function A*_Search(problem):
-    frontier = PriorityQueue()
-    frontier.add(start, priority=h(start))
-    reached = {start: Node(start, None)}
-
-    while not frontier.is_empty():
-        node = frontier.pop()
-        if node.is_goal(): return node
-
-        for child in node.expand():
-            g = node.path_cost + cost(node, child)
-            if child not in reached or g < reached[child].path_cost:
-                reached[child] = Node(child, node, g)
-                frontier.add(child, priority=g + h(child))
-
-    return failure
-```
 
 ## Common Heuristics
 
@@ -501,12 +473,15 @@ function A*_Search(problem):
 - Can degenerate to Dijkstra's if h(n) = 0
 
 <br>   
-   
-![optimistic_heuristic](./images/optimistic_heuristic.png)
-
+<img src="images/optimistic_heuristic.png" width="800" height="auto" alt="optimistic_heuristic">
 <br>
 
-### Vaccum Cleaner State Spaces
+<br>
+<br>
+
+## Vaccum Cleaner State Spaces
+
+<br>
 
 There is a total of 8 possible states in this environment as follows:
 
@@ -514,12 +489,10 @@ There is a total of 8 possible states in this environment as follows:
 - 2 possible states of vacuum cleaner property in each location: True or False
 - 2 possible states of dirt property in each location: True or False
 
-Therefore, the total number of state space is 2 x 2 x 2 = 23 = 8.
+Therefore, the total number of state space is **2 x 2 x 2 = 23 = 8**
 
 <br>   
-   
-![vaccum_cleaner](./images/vaccum.png)
-
+<img src="images/vaccum.png" width="800" height="auto" alt="vaccum_cleaner">
 <br>
 
 ### Vacuum Cleaner States
@@ -529,27 +502,17 @@ Therefore, the total number of state space is 2 x 2 x 2 = 23 = 8.
 3- Brush Height 1 / 2 / 3 / 4 / 5
 4- Extend Positions to 10
 
+<br>   
+<br>   
+
 Route finding is a difficult search problem to solve. The problem lies in the fact that we want the optimal route between two nodes without having to explore all possible routes. Informed search algorithms, such as A\* Search, employ the strategies that considerably narrow down the state space in the problem’s environment.
 
-Whenever the A _Search algorithm decides on the next node to visit, it computes an estimate of the candidate nodes’ distance to the target. In addition, A_ Search uses the edge-weight method made popular by Dijkstra’s algorithm(opens in a new tab). A\* Search is basically an informed variation of Dijkstra’s algorithm with the heuristic function.
+Whenever the A\* Search algorithm decides on the next node to visit, it computes an estimate of the candidate nodes’ distance to the target. In addition, A\* Search uses the edge-weight method made popular by Dijkstra’s algorithm. A\* Search is basically an informed variation of Dijkstra’s algorithm with the heuristic function.
 
-If you’d like to know more about this algorithm and to see some interactive examples of it in action, have a look at the A\* Search tutorial from Red Blob Games(opens in a new tab).
-
-To recap, we cover the following concepts in this lesson:
-
-Informed search algorithms, such as Greedy Best-first Search and A* Search
-Step-by-step A* Search algorithm
-State space and heuristics techniques in informed search algorithms
 
 <br>   
-   
-![pacman](./images/pacman.png)
-
+<img src="images/pacman.png" width="800" height="auto" alt="pacman">
 <br>
-
-
-
-
 
 
 
