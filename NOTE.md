@@ -549,11 +549,17 @@ through explicit propositional and relations between states and actions.
 
 ### Propositional Logic
 
-Propositional logic is a fundamental form of logic that deals with propositions (statements that are either true or false)
-and logical connectives. It's a building block for more complex logical systems and is crucial in AI for representing and
-reasoning about knowledge.
+<br>
 
-Propositional Logic is a simple logic where the truth of sentences is determined. A propositional logic sentence is either true or false with respect to a model of the world. The example of an atomic sentence is P = True . Complex sentences can consists of several atomic sentences connected through parentheses and logical connectives (see table below). A model is a set of true-false values for all the propositional symbols, for example model = { B: True, E: False, ... }.
+Propositional logic is a fundamental form of logic that deals with propositions (statements that are either true or false) and logical connectives. It's a building block for more complex logical systems and is crucial in AI for representing and reasoning about knowledge.
+
+Propositional Logic is a simple logic where the truth of sentences is determined. A propositional logic sentence is either true or false with respect to a model of the world. The example of an atomic sentence is P = True . Complex sentences can consists of several atomic sentences connected through parentheses and logical connectives (see table below). A model is a set of true-false values for all the propositional symbols, for example:
+
+```
+model = { B: True, E: False, ... }.
+```
+
+<br>
 
 | Logical Connective | Meaning        |
 | ------------------ | -------------- |
@@ -562,6 +568,8 @@ Propositional Logic is a simple logic where the truth of sentences is determined
 | ∨                  | OR             |
 | ⇒                  | IMPLY          |
 | ⇔                  | IF AND ONLY IF |
+
+<br>
 
 This is a table showing the basic logical connectives used in propositional logic and their meanings:
 
@@ -585,7 +593,12 @@ A ⇒ (J ∧ M) means if the alarm is triggered, John and Mary will call.
 J ⇔ M means John calls if and only if Mary calls. In other words, if John calls, Mary will call as well.
 J ⇔ ¬M is the opposite of the above. If John calls, Mary won’t call.
 
-Key Components:
+<br>
+<br>
+
+**Key Components:**
+
+<br>
 
 1. Propositional Symbols:
 
@@ -620,18 +633,25 @@ Example Sentences:
 - J ⇔ M: John calls if and only if Mary calls
 - J ⇔ ¬M: John calls if and only if Mary doesn't call
 
-Key Points:
+<br>
+<br>
+
+**Key Points:**
+
+<br>
 
 1. Propositional logic deals with absolute truth values, not probabilities.
 2. It's limited to expressing facts about specific propositions and can't generalize.
 3. Truth tables are used to evaluate complex sentences.
 4. It forms the basis for more complex logics like First-Order Logic.
 
-In AI and automated planning, propositional logic is used to represent states, actions, and goals in a simple, boolean manner.
-It allows for basic reasoning about the truth of statements in different scenarios, which is fundamental for planning and
-decision-making algorithms.
+<br>
 
-Truth Table
+In AI and automated planning, propositional logic is used to represent states, actions, and goals in a simple, boolean manner. It allows for basic reasoning about the truth of statements in different scenarios, which is fundamental for planning and decision-making algorithms.
+
+<br>
+
+**Truth Table**
 
 | P     | Q     | ¬P    | P ∧ Q | P ∨ Q | P ⇒ Q | P ⇔ Q |
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
@@ -639,6 +659,9 @@ Truth Table
 | False | True  | True  | False | True  | True  | False |
 | True  | False | False | False | True  | False | False |
 | True  | True  | False | True  | True  | True  | True  |
+
+<br>
+<br>
 
 Explanation of the truth table:
 
@@ -663,11 +686,16 @@ Explanation of the truth table:
    - True when P and Q have the same truth value (both True or both False).
    - False when P and Q have different truth values.
 
-This truth table is fundamental in propositional logic as it defines the behavior of logical connectives for all possible
-combinations of truth values of P and Q. It allows us to evaluate complex logical statements by breaking them down into
-their constituent parts and applying these rules.
+<br>
+<br>
 
-Q#1: (P is false, Q is false):
+This truth table is fundamental in propositional logic as it defines the behavior of logical connectives for all possible combinations of truth values of P and Q. It allows us to evaluate complex logical statements by breaking them down into their constituent parts and applying these rules.
+
+<br>
+<br>
+
+**Q#1: (P is false, Q is false):**
+
 Correct answer: (P ∧ (P ⇒ Q)) ⇔ (¬ (¬P ∨ ¬Q))
 
 Explanation:
@@ -676,7 +704,8 @@ Explanation:
 - ¬ (¬P ∨ ¬Q) is false because ¬P ∨ ¬Q is true (both ¬P and ¬Q are true).
 - The equivalence of two false statements is true.
 
-Q#2(P is false, Q is true):
+**Q#2(P is false, Q is true):**
+
 Correct answer: (P ∧ (P ⇒ Q)) ⇔ (¬ (¬P ∨ ¬Q))
 
 Explanation:
@@ -685,7 +714,8 @@ Explanation:
 - ¬ (¬P ∨ ¬Q) is false because ¬P ∨ ¬Q is true (¬P is true).
 - The equivalence of two false statements is true.
 
-Q#3(P is true, Q is false):
+**Q#3(P is true, Q is false):**
+
 Correct answer: (P ∧ (P ⇒ Q)) ⇔ (¬ (¬P ∨ ¬Q))
 
 Explanation:
@@ -694,7 +724,8 @@ Explanation:
 - ¬ (¬P ∨ ¬Q) is false because ¬P ∨ ¬Q is true (¬Q is true).
 - The equivalence of two false statements is true.
 
-Q#4(P is true, Q is true):
+**Q#4(P is true, Q is true):**
+
 Correct answers: All three statements
 
 Explanation:
@@ -707,34 +738,29 @@ In all cases, the equivalence statement is true because it represents a tautolog
 of the truth values of its components. This demonstrates an important principle in propositional logic about logical
 equivalences.
 
-Q#1:
-Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable E?
+**Q#1:Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable E?**
 
 Correct Answer: Cannot be determined
 Explanation: While we know B is true, E could be either true or false. If E is true, (E v B) is true. If E is false, (E v B)
 is still true because B is true. Therefore, we can't determine E's specific value.
 
-Q#2:
-Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable B?
+**Q#2:Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable B?**
 
 Correct Answer: True
 Explanation: The question directly states that B is a true statement.
 
-Q#3:
-Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable A?
+**Q#3:Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable A?**
 
 Correct Answer: True
 Explanation: Since (E v B) ⇔ A is true and B is true, (E v B) is true. Therefore, A must be true for the equivalence to hold.
 
-Q#4:
-Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable J?
+**Q#4:Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable J?**
 
 Correct Answer: Cannot be determined
 Explanation: We know A is true, and A ⇔ (J ∧ M) is true. This means (J ∧ M) must be true, but we can't determine if J is true
 or false without knowing M's value.
 
-Q#5:
-Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable M?
+**Q#5:Given that (E v B) ⇔ A, A ⇔ (J ∧ M), and B are all true statements, what is the value of the variable M?**
 
 Correct Answer: Cannot be determined
 Explanation: Similar to J, we know (J ∧ M) is true, but we can't determine M's specific value without knowing J's value.
@@ -772,7 +798,8 @@ Key Points:
 These concepts are crucial in logical reasoning and form the basis for many algorithms in artificial intelligence, including
 automated theorem proving and logical inference systems.
 
-# VSU Analysis Table
+## VSU Analysis Table
+
 
 | V   | S   | U   | Logical Expression                                  |
 | --- | --- | --- | --------------------------------------------------- |
@@ -790,43 +817,41 @@ Where:
 - ● = Yes
 - ○ = No
 
-Q#1:
-Is the following sentence valid, satisfiable, or unsatisfiable? P ∨ ¬P
+**Q#1: Is the following sentence valid, satisfiable, or unsatisfiable? P ∨ ¬P**
 
 Correct Answer: Valid
 Explanation: This sentence is a tautology, which is always true regardless of the truth value of P. If P is true, P ∨ ¬P
 is true. If P is false, ¬P is true, so P ∨ ¬P is still true. Therefore, it's valid (true in all possible models).
 
-Q#2:
-Is the following sentence valid, satisfiable, or unsatisfiable? P ∧ ¬P
+**Q#2: Is the following sentence valid, satisfiable, or unsatisfiable? P ∧ ¬P**
 
 Correct Answer: Unsatisfiable
 Explanation: This sentence is a contradiction. It can never be true because P cannot be simultaneously true and false.
 Therefore, it's unsatisfiable (false in all possible models).
 
-Q#3:
-Is the following sentence valid, satisfiable, or unsatisfiable? P ∨ (P ∧ Q)
+**Q#3: Is the following sentence valid, satisfiable, or unsatisfiable? P ∨ (P ∧ Q)**
 
 Correct Answer: Not provided in the image, but the correct answer would be Satisfiable.
 Explanation: This sentence is true whenever P is true, regardless of Q's value. It's also true when both P and Q are true.
 However, it's false when P is false and Q is true. Therefore, it's satisfiable (true in some models, but not all).
 
-Q#4:
-Is the following sentence valid, satisfiable, or unsatisfiable? (P ∧ Q) ∨ (P ∧ ¬Q)
+**Q#4:Is the following sentence valid, satisfiable, or unsatisfiable? (P ∧ Q) ∨ (P ∧ ¬Q)**
 
 Correct Answer: Not provided in the image, but the correct answer would be Satisfiable.
 Explanation: This sentence is equivalent to P ∧ (Q ∨ ¬Q). It's true whenever P is true, regardless of Q's value. However,
 it's false when P is false. Therefore, it's satisfiable (true in some models, but not all).
 
-Q#5:
-Is the following sentence valid, satisfiable, or unsatisfiable? ((Food ∧ Party) ∨ (Drinks ∧ Party)) ⇔ ((Food ∨ Drinks) ∧ Party)
+**Q#5: Is the following sentence valid, satisfiable, or unsatisfiable? ((Food ∧ Party) ∨ (Drinks ∧ Party)) ⇔ ((Food ∨ Drinks) ∧ Party)**
 
 Correct Answer: The correct answer would be Valid.
 Explanation: This sentence is a logical equivalence. The left side is true when there's a party with food or drinks (or both).
 The right side expresses the same condition. This equivalence holds for all possible combinations of truth values for Food, Drinks,
 and Party. Therefore, it's valid (true in all possible models).
 
-Limitations of Propositional Logic
+<br>
+<br>
+
+**Limitations of Propositional Logic**
 
 1.  It can only handle boolean value (ie. true or false) and does not have a capability to handle complex values, such as
     uncertainty (probability value).
@@ -849,15 +874,17 @@ The other difference is that OOP lacks the expressiveness required to handle par
 
       if x is in loc A, then it is not in loc B.
 
-
+<br>
+<br>
 
 ### FOL Models 
 
 The model in First Order Logic can process more complex representations than that in Propositional Logic.
 
-In the Propositional Logic, a model is a set of objects with boolean values, such as pl_model = { P: true, Q: false, ... }.
-Whereas, in the First Order Logic, a model is a set of tuples and can consist of the properties or functional relationship of the objects, such as fol_model = { Write(Author(Peter), Book(AI textbook)) }.
+In the Propositional Logic, a model is a set of objects with boolean values, such as pl_model = { P: true, Q: false, ... }. Whereas, in the First Order Logic, a model is a set of tuples and can consist of the properties or functional relationship of the objects, such as fol_model = { Write(Author(Peter), Book(AI textbook)) }.
 
+<br>
+<br>
 
 1. Propositional Logic Models:
 
@@ -904,6 +931,8 @@ for more sophisticated reasoning and inference compared to the simpler boolean w
 
 The symbols ∀ and ∃ are quantifiers in First Order Logic (FOL). They are fundamental to expressing complex logical statements
 about sets of objects. Let's break them down:
+
+<br>
 
 1. ∀ (Universal Quantifier):
 
@@ -1005,9 +1034,9 @@ These constructs allow AI systems to reason about general principles and specifi
 human logical thinking.
 
 
-# First Order Logic (FOL) Syntax
+### First Order Logic (FOL) Syntax
 
-## Logical Connectives
+**Logical Connectives**
 
 | Logical Connective | Meaning |
 |-------------------|----------|
@@ -1017,7 +1046,10 @@ human logical thinking.
 | ⇒ | IMPLY |
 | ⇔ | IF AND ONLY IF |
 
-## Quantifiers
+<br>
+
+### Quantifiers
+
 FOL extends propositional logic by adding quantifiers to express properties of collections of objects:
 
 ### Universal Quantification (∀)
@@ -1036,7 +1068,9 @@ FOL extends propositional logic by adding quantifiers to express properties of c
 
 This extension of propositional logic to first-order logic allows us to express more complex logical statements and relationships between objects and their properties.
 
-### First Order Logic in Vacuum World
+<br>
+
+## First Order Logic in Vacuum World
 
 1. Initial State:
    At(V,A)
@@ -1077,33 +1111,33 @@ This extension of propositional logic to first-order logic allows us to express 
 These equations demonstrate how First Order Logic can be used to represent and reason about complex scenarios in AI planning
 and problem-solving.
 
-Question 1:
-Is the following sentence valid, satisfiable, or unsatisfiable? ∃x: y: x = y
+<br>
+<br>
+
+**Q#1:Is the following sentence valid, satisfiable, or unsatisfiable? ∃x: y: x = y**
 
 Correct Answer: Valid
 
-Question 2:
-Is the following sentence valid, satisfiable, or unsatisfiable? (∃x: x = x) ∨ (∀y ∃z: y = z)
+**Q#2:Is the following sentence valid, satisfiable, or unsatisfiable? (∃x: x = x) ∨ (∀y ∃z: y = z)**
 
 Correct Answer: Valid
 Explanation: This sentence is always true, making it valid. The left part (∃x: x = x) is always true because for any domain,
 there exists an x that equals itself. Even if the right part were false, the sentence would still be true due to the OR (∨)
 operator.
 
-Question 3:
-Is the following sentence valid, satisfiable, or unsatisfiable? ∀x: P(x) ∨ ¬ P(x)
+**Q#3:Is the following sentence valid, satisfiable, or unsatisfiable? ∀x: P(x) ∨ ¬ P(x)**
 
 Correct Answer: Valid
 Explanation: This sentence is a tautology in first-order logic. For any predicate P and any object x, either P(x) is true
 or its negation ¬P(x) is true. This holds for all possible interpretations of P and all possible domains, making it valid.
 
-Question 4:
-Is the following sentence valid, satisfiable, or unsatisfiable? ∃x: P(x)
+**Q#4:Is the following sentence valid, satisfiable, or unsatisfiable? ∃x: P(x)**
 
 Correct Answer: Satisfiable
-Explanation: This sentence states that there exists an x for which the predicate P is true. It's satisfiable because we
-can construct a model where P is true for at least one object. However, it's not valid because we can also construct
-models where P is false for all objects. It's also not unsatisfiable because it can be true in some models.
+Explanation: This sentence states that there exists an x for which the predicate P is true. It's satisfiable because we can construct a model where P is true for at least one object. However, it's not valid because we can also construct models where P is false for all objects. It's also not unsatisfiable because it can be true in some models.
+
+<br>
+<br>
 
 List of logical statements under the heading "VSU", which stands for Valid, Satisfiable, and Unsatisfiable.
 
@@ -1131,6 +1165,9 @@ List of logical statements under the heading "VSU", which stands for Valid, Sati
    - It means "There exists an x for which P(x) is true."
    - This can be true or false depending on the interpretation of P and the domain.
    - It's not valid (as it's not necessarily true for all interpretations) and not unsatisfiable (as we can construct models where it's true).
+
+<br>
+<br>
 
 The VSU classification helps in understanding the nature of these logical statements:
 
@@ -1162,9 +1199,13 @@ can be true under certain conditions, and which are never true.
    square at (x,y) is adjacent to the square at (x+1,y) and the square at (x,y+1). This correctly defines horizontal and
    vertical adjacency in a grid.
 
+<br>
+<br>
+
 The "Y N | Adjacent squares" header suggests that these statements are all true (Y) and relate to the concept of adjacent squares,
 which is consistent with the explanations provided.
 
+<br>
 
 | Y | N | Expression |
 |---|---|------------|
@@ -1173,13 +1214,18 @@ which is consistent with the explanations provided.
 | ○ | ● | ∀x,s Member(x,s) ⇒ (∀y Member(x,Add(y,s))) |
 | ○ | ● | ∀x,y Adj(Sq(x,y), Sq(+(x,1),y)) ∧ <br> Adj(Sq(x,y), Sq(x,+(y,1))) <br> Sq(1,1) Sq(2,1) <br> Sq(1,2) ⇔ |
 
+<br>
+
 Where:
 - Y: Yes (●) or No (○)
 - N: Yes (●) or No (○)
 - Expression: First Order Logic expression
 
-Question 1:
-Is the following first-order logic sentence a good representation of the English language sentence, "Sam has two jobs"?
+<br>
+<br>
+
+**Q#1:Is the following first-order logic sentence a good representation of the English language sentence, "Sam has two jobs"?**
+
 ∃x, y: Job(Sam, x) ∧ Job(Sam, y) ∧ ¬(x = y)
 
 Correct Answer: Yes
@@ -1188,15 +1234,15 @@ Explanation: This first-order logic sentence accurately represents "Sam has two 
 things (x and y) such that both are jobs of Sam (Job(Sam, x) and Job(Sam, y)), and these two things are not the same (¬(x = y)).
 This captures the essence of having two distinct jobs.
 
-Question 2:
-Are the following first-order logic sentences a good representation of the concept of set membership?
+**Q#2:Is the following first-order logic sentence a good representation of the concept of set membership?**
+
 ∀x, s: Member(x, Add(x, s)) ∀x, s: Member(x, s) ⇒ (∀y: Member(x, Add(y, s)))
 
 Correct Answer: No
 
 
-Question 3:
-Is the following first-order logic sentence a good representation of the concept of adjacent squares on a chessboard?
+**Q#3:Is the following first-order logic sentence a good representation of the concept of adjacent squares on a chessboard?**
+
 ∀x, y: Adj(sq(x, y), sq(+(x, 1), y)) ∧ Adj(sq(x, y), sq(x, +(y, 1)))
 
 Correct Answer: No
@@ -1208,6 +1254,7 @@ adjacency, which isn't typically considered in chess movements except for specif
 
 <br>
 <br>
+
 
 # CHAPTER-2: Introduction to Planning
 
