@@ -1260,17 +1260,29 @@ adjacency, which isn't typically considered in chess movements except for specif
 
 <br>
 
-### Planning VS Execution
+## Planning VS Execution
 
-Planning vs. Execution Challenges in Real-World Scenarios:
+<br>
 
+In the realm of artificial intelligence and decision-making, planning and execution are two distinct yet intertwined processes. Planning involves devising a strategy or sequence of actions to achieve a specific goal, while execution is the actual implementation of these planned actions.
 
-Challenges in real world planning:
+<br>
 
-Uncertain environments *Stochastic: the outcomes resulted from a sequence of actions cannot be determined with certainty. *Multiagent: the outcomes and actions taken by an agent will be impacted by other agents in the environment. *Partially Observable: the agent will rely on its own belief state, rather than the actual states of the world.
-Agent's own internal knowledge *Unknown: the agent does not have prior knowledge about certain states. *Hierarchical: the actions and outcomes do not necessarily follow a linear process.
-Note: you may hear the terms “non-deterministic” and “stochastic” to be used interchangeably. Both terms describe the uncertainty in the environment, as opposed to the deterministic nature. There is a subtle difference between these two terms. Stochastic refers to the randomness and can be quantified in probabilities. On the other hand, non-deterministic exhibits different outcomes on different runs with the same set of input.
+**Planning:**
 
+1. Uncertain Environments: Planning often occurs in environments where outcomes are uncertain. This can be due to stochastic elements, where outcomes are probabilistic, or multiagent settings, where other agents' actions influence the outcomes.
+2. Agent's Knowledge: The planning process relies on the agent's internal knowledge, which might be incomplete or hierarchical, meaning actions and outcomes don't always follow a straightforward path.
+3. Non-Deterministic vs Stochastic: While both terms describe uncertainty, stochastic environments allow for probabilistic quantification of outcomes, whereas non-deterministic environments can result in different outcomes with the same inputs.
+
+**Execution:**
+
+1. Execution is the phase where the planned actions are carried out. It requires real-time decision-making and adaptability to changes in the environment.
+2. In partially observable environments, execution depends on the agent's belief state rather than the actual state of the world, requiring continuous updates and adjustments to the plan.
+
+Together, planning and execution form a cycle where plans are created, executed, and revised based on feedback and changes in the environment. Understanding the nuances between planning and execution is crucial for developing robust AI systems capable of operating in complex and dynamic settings.
+
+<br>
+<br>
 
 1. Uncertain Environments:
    a) Stochastic:
@@ -1333,7 +1345,10 @@ Note: you may hear the terms “non-deterministic” and “stochastic” to be 
 These challenges highlight the complexity of real-world planning and the need for sophisticated AI planning systems that
 can handle uncertainty, partial information, and dynamic environments.
 
-### Vacuum Cleaner Planning Problem
+<br>
+<br>
+
+## Vacuum Cleaner Planning Problem
 
 
 In the “informed search” lesson, the vacuum cleaner operates in a fully observable and deterministic environment. Under these conditions, the vacuum cleaner knows where it is and whether there is dirt in all locations (fully observable). Also, the actions taken by the vacuum cleaner will result in certain states (deterministic). In order to achieve its goal under this environment, the vacuum cleaner can search the state space.
