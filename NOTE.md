@@ -1741,22 +1741,26 @@ and actions may have unpredictable outcomes.
 
 ### Classical Planning State Space Representation
 
-A complete assignment is state space where every variable is assigned and a solution is consistent. A partial assignment is state space that assigns values to only some of the variables.
+A complete assignment is state space where every variable is assigned and a solution is consistent. A partial assignment is state space that assigns values to only some of the variables. A complete assignment is possible in a deterministic and fully observable environment, such as those in the search problems. However, most environments are stochastic and partially deterministic. Therefore, we use belief state space, which can be complete or partial assignments.
 
-A complete assignment is possible in a deterministic and fully observable environment, such as those in the search problems. However, most environments are stochastic and partially deterministic. Therefore, we use belief state space, which can be complete or partial assignments.
+<br>
 
-Classical Planning Actions Representation
-A planning agent relies on the action schemas to know what actions are possible in the current state. An action schema consists of
+**Classical Planning Actions Representation**
 
-the action name,
-a list of state variables in current space,
-the preconditions to create this action schema possible, and
+A planning agent relies on the action schemas to know what actions are possible in the current state. An action schema consists of the action name, a list of state variables in current space, the preconditions to create this action schema possible, and
 the effects after this action is completed.
+
 An example of an action schema is as follows:
 
+<br>
+
+```
 Action (Fly (p, from , to ),  
 	PRECOND:At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to) 
 	EFFECT:¬At(p, from) ∧ At(p, to))
+```
+
+<br>
 
 - Schema: Action()
 - Action name: Fly
@@ -1764,203 +1768,19 @@ Action (Fly (p, from , to ),
 - Preconditions: there is a plane ("Plane(p )") and two airports ("Airport(from)") and "Airport(to)"), the current location of the plane("At(p, from)")
 - Effects: the plane is no longer at previous location ("¬At(p, from)") and plane's new location("At(p, to)")
 
+<br>
+<br>
 
-Planning Domain Definition Language (PDDL)
-The writings of planning domains and problems are commonly standardized in a Planning Domain Definition Language (PDDL). A complete PDDL consists of an initialization of the planning domains, the goal of the planning problem, and a set of action schemas.
-
-An example of a PDDL is as follows:
-
-```textmate
-Init(At(C1, SFO) ∧ At(C2, JFK) ∧ At(P1, SFO) ∧ At(P2, JFK) 
-∧ Cargo(C1) ∧ Cargo(C2) ∧ Plane(P1) ∧ Plane(P2)  
-∧ Airport(JFK) ∧ Airport(SFO))
-
-Goal(At(C1, JFK) ∧ At(C2, SFO)) 
-
-Action(Load(c, p, a),
-	PRECOND: At(c, a) ∧ At(p, a) ∧ Cargo(c) ∧ Plane(p) ∧ Airport(a)
-	EFFECT: ¬ At(c, a) ∧ In(c, p)) 
-
-Action(Unload(c, p, a),
-	PRECOND: In(c, p) ∧ At(p, a) ∧ Cargo(c) ∧ Plane(p) ∧ Airport(a)
-	EFFECT: At(c, a) ∧ ¬ In(c, p)) 
-
-Action(Fly(p, from, to),
-	PRECOND: At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to) 	
-	EFFECT: ¬ At(p, from) ∧ At(p, to))
-```
-
-
-### Progression Search
-
-There are two approaches to find possible solutions in the planning problem state space. They are
-
-Progression Search: a forward search from the initial state to the goal state.
-Regression Search: a reverse search from the goal state back to the initial state.
-In a tree search, we stack the nodes from top to bottom (the initial state is set as the root node). In the planning graph, it is common to line up the initial state to the goal state from left to right. In the progression search, we start from the initial node on the left and expand the nodes to the right until we find the possible solutions by reaching the goal states.
-
-While the progression search is commonly used, there are two limitations with this approach:
-
-   1. The graph may explore unnecessary actions. For example, the graph may explore a state where a plane with an empty cargo flies from one airport to another.
-   2. The graph may require large storage as the number of nodes expands exponentially with the number of variables.
-
-In the next video, we will learn how the regression search only considers the relevant action schemas from the goal state.
-
-### Regression Search
-
-The regression search is also known as the relevant-state search. As we have seen in the previous lesson, a complete PDDL includes the action schemas along with the preconditions and effects associated with certain actions. By working backward from the goal state, the regression search will expand only the relevant nodes according to the action schemas. Therefore, the branching factor for the regression search is smaller than the progression search. However, the regression search has a limitation because we cannot apply heuristics to speed up the search back to the initial state.
-
-
-1. State Space Representation:
-   a) Complete Assignment:
-
-   - Every variable is assigned a value
-   - Represents a fully defined state
-   - Suitable for deterministic and fully observable environments
-
-   b) Partial Assignment:
-
-   - Only some variables are assigned values
-   - Represents incomplete knowledge of the state
-   - Useful in stochastic and partially observable environments
-
-   c) Belief State Space:
-
-   - Can be complete or partial assignments
-   - Represents agent's knowledge about possible states
-   - Essential for planning in uncertain environments
-
-   2. State Space Characteristics:
-
-      - k-Boolean (2^k): Represents the total number of possible states
-      - For the vacuum cleaner example: 3 Boolean variables (Dirt A, Dirt B, Vac A)
-        Total possible states: 2^3 = 8 states
-
-      3. Action Representation:
-         a) Action Schema:
-
-         - Defines possible actions in a given state
-         - Components:
-           - Action name
-           - List of state variables
-           - Preconditions
-           - Effects
-
-         b) Example: Fly Action Schema
-
-      ```textmate
-         Action(Fly(p, from, to),
-                    PRECOND: At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to)
-                    EFFECT: ¬At(p, from) ∧ At(p, to))
-      ```
-
-      - Name: Fly
-      - Variables: p (plane), from (departure airport), to (arrival airport)
-      - Preconditions: Plane is at departure airport, both locations are airports
-      - Effects: Plane is no longer at departure, now at arrival airport
-
-2. Planning Process:
-
-   - Agent uses action schemas to determine possible actions
-   - Evaluates preconditions against current state
-   - Applies effects to predict new states
-   - Builds a plan by chaining actions to reach goal state
-
-3. Advantages of Classical Planning:
-
-   - Provides a structured approach to problem-solving
-   - Allows for generalization across similar problems
-   - Facilitates automated reasoning about actions and their consequences
-
-4. Limitations:
-
-   - May struggle with highly complex or uncertain environments
-   - Assumes perfect knowledge in complete assignments
-
-5. Applications:
-   - Robotics navigation
-   - Logistics and supply chain optimization
-   - Game AI for strategy games
-
-This framework of Classical Planning provides a foundation for more advanced planning techniques, especially when dealing
-with real-world complexities and uncertainties.
-
-Classical Planning Actions Representation
-
-A planning agent relies on the action schemas to know what actions are possible in the current state. An action schema consists of
-the action name, a list of state variables in current space, the preconditions to create this action schema possible, and the effects
-after this action is completed. An example of an action schema is as follows:
-
-```textmate
-Action (Fly (p, from , to ),
-	PRECOND:At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to)
-	EFFECT:¬At(p, from) ∧ At(p, to))
-```
-
-Schema: Action()
-Action name: Fly
-A list of state variables: plane (p), the airport it flies from (from), and the airport it's flying to (to)
-Preconditions: there is a plane ("Plane(p )") and two airports ("Airport(from)") and "Airport(to)"), the current location of the plane("At(p, from)")
-Effects: the plane is no longer at previous location ("¬At(p, from)") and plane's new location("At(p, to)")
-
-This is an action schema in classical planning, specifically for a "Fly" action. Let's break it down in detail:
-
-```textmate
-Action(Fly(p, from, to),
-  PRECOND: At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to)
-  EFFECT: ¬At(p, from) ∧ At(p, to))
-```
-
-1. Action Name: Fly
-
-   - This defines the action being described.
-
-2. Parameters: (p, from, to)
-
-   - p: represents the plane
-   - from: represents the departure airport
-   - to: represents the destination airport
-
-3. PRECOND (Preconditions):
-
-   - At(p, from): The plane p is currently at the departure airport 'from'
-   - Plane(p): p is indeed a plane
-   - Airport(from): 'from' is an airport
-   - Airport(to): 'to' is an airport
-   - The ∧ symbol represents logical AND, meaning all these conditions must be true for the action to be possible
-
-4. EFFECT (Effects):
-   - ¬At(p, from): The plane p is no longer at the departure airport 'from'
-     (¬ represents logical NOT)
-   - At(p, to): The plane p is now at the destination airport 'to'
-   - The ∧ symbol here means both these effects occur simultaneously
-
-Explanation of how this works in planning:
-
-1. Before the action can be executed, the planner checks if all preconditions are met in the current state.
-
-2. If the preconditions are satisfied, the action can be applied.
-
-3. When applied, the effects modify the current state:
-
-   - It removes the fact that the plane is at the departure airport
-   - It adds the fact that the plane is at the destination airport
-
-4. This new state then becomes the basis for the next action in the plan.
-
-This action schema allows the planner to reason about moving planes between airports. It ensures that planes only fly between
-actual airports and that a plane must be at the departure airport before it can fly to the destination. The effects accurately
-represent the change in the plane's location after the flight.
-
-Planning Domain Definition Language (PDDL)
+**Planning Domain Definition Language (PDDL)**
 
 The writings of planning domains and problems are commonly standardized in a Planning Domain Definition Language (PDDL).
 A complete PDDL consists of an initialization of the planning domains, the goal of the planning problem, and a set of
-action schemas.
+action schemas. An example of a PDDL is as follows:
 
-An example of a PDDL is as follows:
+<br>
+<br>
 
-```textmate
+```
 Init(At(C1, SFO) ∧ At(C2, JFK) ∧ At(P1, SFO) ∧ At(P2, JFK)
 ∧ Cargo(C1) ∧ Cargo(C2) ∧ Plane(P1) ∧ Plane(P2)
 ∧ Airport(JFK) ∧ Airport(SFO))
@@ -1980,7 +1800,10 @@ Action(Fly(p, from, to),
 	EFFECT: ¬ At(p, from) ∧ At(p, to))
 ```
 
-Classical planning problem for cargo transportation:
+<br>
+<br>
+
+**Classical planning problem for cargo transportation:**
 
 1. Initial State (Init):
 
@@ -2043,22 +1866,32 @@ To solve this problem, a planner would need to:
 This sequence of actions would achieve the goal state. The planner would use the action schemas to determine which actions
 are possible at each step and how they change the world state, gradually working towards the goal state.
 
-Progression Search in Planning Problems
 
-There are two approaches to find possible solutions in the planning problem state space. They are
+<br>
+<br>
 
-1.  Progression Search: a forward search from the initial state to the goal state.
-2.  Regression Search: a reverse search from the goal state back to the initial state.
+There are **two approaches** to find possible solutions in the **planning problem state space**. They are
 
-In a tree search, we stack the nodes from top to bottom (the initial state is set as the root node). In the planning graph,
-it is common to line up the initial state to the goal state from left to right. In the progression search, we start from the
-initial node on the left and expand the nodes to the right until we find the possible solutions by reaching the goal states.
+1. Progression Search: a forward search from the initial state to the goal state.
+2. Regression Search: a reverse search from the goal state back to the initial state.
+
+<br>
+<br>
+
+In a tree search, we stack the nodes from top to bottom (the initial state is set as the root node). In the planning graph, it is common to line up the initial state to the goal state from left to right. In the progression search, we start from the initial node on the left and expand the nodes to the right until we find the possible solutions by reaching the goal states.
 
 While the progression search is commonly used, there are two limitations with this approach:
 
-The graph may explore unnecessary actions. For example, the graph may explore a state where a plane with an empty cargo flies
-from one airport to another. The graph may require large storage as the number of nodes expands exponentially with the number
-of variables.
+   1. The graph may explore unnecessary actions. For example, the graph may explore a state where a plane with an empty cargo flies from one airport to another.
+   2. The graph may require large storage as the number of nodes expands exponentially with the number of variables.
+
+
+### Progression Search
+
+Progression Search is a forward search strategy that begins from the initial state and progresses towards the goal state by systematically applying possible actions to generate new states. It is intuitive and effective for exploring the state space but can suffer from exploring unnecessary actions and state space explosion, making it resource-intensive. This approach is often used in planning scenarios like logistics and scheduling, with potential improvements through heuristics and pruning techniques.
+
+<br>
+<br>
 
 1. Definition:
    Progression Search is a forward search strategy that starts from the initial state and moves towards the goal state in planning problems.
@@ -2113,93 +1946,184 @@ of variables.
 This approach provides a systematic way to explore the planning problem space, but it's important to be aware of its limitations
 and consider alternative or complementary strategies for complex problems.
 
-Regression Search in Planning Problems
 
-1. Definition:
-   Regression Search, also known as relevant-state search, is a backward search strategy that starts from the goal state and
-   works towards the initial state in planning problems.
+<br>
+<br>
 
-2. Process:
-   a) Start with the goal state (e.g., At(C1, JFK), At(C2, SFO))
-   b) Identify relevant actions that could lead to the goal state
-   c) Work backward, applying inverse actions
-   d) Continue until the initial state is reached
+### Regression Search
 
-3. Key Characteristics:
+The regression search is also known as the relevant-state search. As we have seen in the previous lesson, a complete PDDL includes the action schemas along with the preconditions and effects associated with certain actions. By working backward from the goal state, the regression search will expand only the relevant nodes according to the action schemas. Therefore, the branching factor for the regression search is smaller than the progression search. However, the regression search has a limitation because we cannot apply heuristics to speed up the search back to the initial state.
 
-   - Uses action schemas, preconditions, and effects to guide the search
-   - Expands only relevant nodes based on action schemas
-   - Typically has a smaller branching factor compared to progression search
+<br>
+<br>
 
-4. Example (from image):
-   Goal State: At(C1, JFK), At(C2, SFO)
-   Relevant Action: Unload(C1, P, JFK)
-   Preconditions added: In(C1, P), At(P, JFK)
+1. State Space Representation:
+   a) Complete Assignment:
 
-5. Action Schema (Unload):
-   PRECOND: In(c,p) ∧ At(p, a) ∧ Cargo(c) ∧ Plane(p) ∧ Airport(a)
-   EFFECT: At(c, a) ∧ ¬In(c,p)
+   - Every variable is assigned a value
+   - Represents a fully defined state
+   - Suitable for deterministic and fully observable environments
 
-6. Advantages:
+   b) Partial Assignment:
 
-   - Focuses on relevant actions and states
-   - Reduces the search space compared to progression search
-   - Can be more efficient in certain types of problems
+   - Only some variables are assigned values
+   - Represents incomplete knowledge of the state
+   - Useful in stochastic and partially observable environments
 
-7. Limitations:
+   c) Belief State Space:
 
-   - Difficulty in applying heuristics to speed up the search
-   - May struggle with problems where the goal state is less well-defined
+   - Can be complete or partial assignments
+   - Represents agent's knowledge about possible states
+   - Essential for planning in uncertain environments
 
-8. Comparison to Progression Search:
+   2. State Space Characteristics:
 
-   - Regression: works backward from goal to initial state
-   - Progression: works forward from initial state to goal
+      - k-Boolean (2^k): Represents the total number of possible states
+      - For the vacuum cleaner example: 3 Boolean variables (Dirt A, Dirt B, Vac A)
+        Total possible states: 2^3 = 8 states
 
-9. Applications:
+      3. Action Representation:
+         a) Action Schema:
 
-   - Effective in domains where the goal state is well-defined
-   - Useful in planning problems with many irrelevant actions
+         - Defines possible actions in a given state
+         - Components:
+           - Action name
+           - List of state variables
+           - Preconditions
+           - Effects
 
-10. Considerations:
+         b) Example: Fly Action Schema
 
-    - Choice between regression and progression search depends on the specific problem characteristics
-    - May be combined with other techniques for improved performance
+      ```
+         Action(Fly(p, from, to),
+                    PRECOND: At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to)
+                    EFFECT: ¬At(p, from) ∧ At(p, to))
+      ```
 
-11. Key Takeaway:
-    Regression search can be more efficient by focusing on relevant states and actions, but it has limitations in applying
-    heuristics for search optimization.
+      - Name: Fly
+      - Variables: p (plane), from (departure airport), to (arrival airport)
+      - Preconditions: Plane is at departure airport, both locations are airports
+      - Effects: Plane is no longer at departure, now at arrival airport
 
-This approach provides an alternative strategy for exploring the planning problem space, particularly useful when the goal
-state is well-defined and there are many potentially irrelevant actions in the problem domain.
+2. Planning Process:
 
+   - Agent uses action schemas to determine possible actions
+   - Evaluates preconditions against current state
+   - Applies effects to predict new states
+   - Builds a plan by chaining actions to reach goal state
 
+3. Advantages of Classical Planning:
 
-### Regression vs Progression
+   - Provides a structured approach to problem-solving
+   - Allows for generalization across similar problems
+   - Facilitates automated reasoning about actions and their consequences
 
-### Planning Graph
+4. Limitations:
 
+   - May struggle with highly complex or uncertain environments
+   - Assumes perfect knowledge in complete assignments
 
-In the following project, you will implement a planning graph, which is a special data structure that is optimized to search for the solutions for a PDDL.
+5. Applications:
+   - Robotics navigation
+   - Logistics and supply chain optimization
+   - Game AI for strategy games
 
-A planning graph is a directed graph organized into levels: the first level S0 is the initial state, consisting of nodes representing each fluent; then the first level A0 consisting of nodes for each possible action from the states in S0; followed by the alternating levels of Si and Ai until we reach a termination condition. A planning graph terminates when two consecutive levels are identical. At this point, we say that the graph has leveled off.
+This framework of Classical Planning provides a foundation for more advanced planning techniques, especially when dealing
+with real-world complexities and uncertainties.
 
-A planning graph is more efficient than progression and regression searches because the graphplan algorithm can eliminate conflicting actions within an action layer. The conflicting actions can be prevented by the mutual exclusion (mutex) relationships. When the algorithm decides to not taking any action, it is called taking a persistence action, also known as no-op.
+<br>
+<br>
 
-There are three possible mutex conditions holds between two actions:
+**Classical Planning Actions Representation**
 
-   1. Inconsistent effects: one action negates an effect of the other. For example, Load(Cargo) and the persistence of Unload(Cargo) have inconsistent effects because they disagree on the effect Unload(Cargo).
-   2. Interference: one of the effects of one action is the negation of a precondition of the other. For example Fly(p, a, b) interferes with the persistence of At(p, a) by negating its precondition.
-   3. Competing needs: one of the preconditions of one action is mutually exclusive with a precondition of the other. For example, Fly(p, a, b) and Fly(p, a, c) are mutex because they compete on the value of the At(p, a) precondition.
+<br>
 
-The planning graph is a robust data structure to solve a planning problem. If a solution is not found by the end of the planning graph layer, the problem is considered unsolvable.
+A planning agent relies on the action schemas to know what actions are possible in the current state. An action schema consists of
+the action name, a list of state variables in current space, the preconditions to create this action schema possible, and the effects
+after this action is completed. An example of an action schema consists of the action name, a list of state variables in current space,
+the preconditions to create this action schema possible, and the effects after this action is completed.:
 
-The planning graph can also provide a heuristic estimation, which calculates the cost to reach the goal states. The cost is known as the level cost based on the number of layers that the algorithm needs to go through to find the solutions. For example, let’s say we have a planning graph with the following alternating layers: S0, A0, S1, A1, S2, A2, S3, A3. If the algorithm finds the conjunction goals at S2 and S3, we can say the cost or level-sum heuristic estimation is 5 (=2 + 3).
+<br>
+<br>
 
+1. Schema: Action()
+2. Action name: Fly
+3. A list of state variables: Plane (p), the airport it flies from (from), and the airport it's flying to (to)
+4. Preconditions: there is a Plane ("Plane(p )") and two airports ("Airport(from)") and "Airport(to)"), the current location of the plane("At(p, from)")
+5. Effects: the plane is no longer at previous location ("¬At(p, from)") and plane's new location("At(p, to)")
 
+<br>
 
-# Additional Planing Topics
+```
+Action (Fly (p, from , to ),
+	PRECOND:At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to)
+	EFFECT:¬At(p, from) ∧ At(p, to))
+```
 
+<br>
+<br>
+
+This is an action schema in classical planning, specifically for a "Fly" action. Let's break it down in detail:
+
+```
+Action(Fly(p, from, to),
+  PRECOND: At(p, from) ∧ Plane(p) ∧ Airport(from) ∧ Airport(to)
+  EFFECT: ¬At(p, from) ∧ At(p, to))
+```
+
+<br>
+<br>
+
+1. Action Name: Fly
+
+   - This defines the action being described.
+
+2. Parameters: (p, from, to)
+
+   - p: represents the plane
+   - from: represents the departure airport
+   - to: represents the destination airport
+
+3. PRECOND (Preconditions):
+
+   - At(p, from): The plane p is currently at the departure airport 'from'
+   - Plane(p): p is indeed a plane
+   - Airport(from): 'from' is an airport
+   - Airport(to): 'to' is an airport
+   - The ∧ symbol represents logical AND, meaning all these conditions must be true for the action to be possible
+
+4. EFFECT (Effects):
+   - ¬At(p, from): The plane p is no longer at the departure airport 'from'
+     (¬ represents logical NOT)
+   - At(p, to): The plane p is now at the destination airport 'to'
+   - The ∧ symbol here means both these effects occur simultaneously
+
+<br>
+
+Explanation of how this works in planning:
+
+1. Before the action can be executed, the planner checks if all preconditions are met in the current state.
+2. If the preconditions are satisfied, the action can be applied.
+3. When applied, the effects modify the current state:
+
+   - It removes the fact that the plane is at the departure airport
+   - It adds the fact that the plane is at the destination airport
+4. This new state then becomes the basis for the next action in the plan.
+
+<br>
+<br>
+
+This action schema allows the planner to reason about moving planes between airports. It ensures that planes only fly between
+actual airports and that a plane must be at the departure airport before it can fly to the destination. The effects accurately
+represent the change in the plane's location after the flight.
+
+<br>
+<br>
+
+# CHAPTER-5: Additional Planing Topics
+
+<br>
+<br>
 
 ### Plan Space Search
 
