@@ -1350,11 +1350,14 @@ can handle uncertainty, partial information, and dynamic environments.
 
 ## Vacuum Cleaner Planning Problem
 
+<br>
 
-In the “informed search” lesson, the vacuum cleaner operates in a fully observable and deterministic environment. Under these conditions, the vacuum cleaner knows where it is and whether there is dirt in all locations (fully observable). Also, the actions taken by the vacuum cleaner will result in certain states (deterministic). In order to achieve its goal under this environment, the vacuum cleaner can search the state space.
+In the **informed search**, the vacuum cleaner operates in a fully observable and deterministic environment. Under these conditions, the vacuum cleaner knows where it is and whether there is dirt in all locations (fully observable). Also, the actions taken by the vacuum cleaner will result in certain states (deterministic). In order to achieve its goal under this environment, the vacuum cleaner can search the state space.
 
-In this lesson, our planning agent will take on a more challenging environment, where it is only partially observable and nondeterministic. Under this challenging environment, we will introduce the concepts of belief state (a set of possible worlds). The belief state represents the agent’s current belief (not actual state) about the possible states it might be in after taking an action (or a sequence of actions) up to that point.
+Now, the planning agent will take on a more challenging environment, where it is only **partially observable** and **nondeterministic**. Under this challenging environment, we will introduce the concepts of belief state (a set of possible worlds). The belief state represents the agent’s current belief (not actual state) about the possible states it might be in after taking an action (or a sequence of actions) up to that point.
 
+<br>
+<br>
 
 1. Fully Observable, Deterministic Environment:
 
@@ -1394,12 +1397,13 @@ In this lesson, our planning agent will take on a more challenging environment, 
    - More robust in real-world scenarios
    - Allows for contingency planning
 
+<br>
+<br>
+
 ### Sensorless Vacuum Cleaner Problem
 
 <br>
-
-![vaccum_1](./images/vaccum_1.png)
-
+<img src="images/vaccum_1.png" width="800" height="auto" alt="vaccum_2">
 <br>
 
 ### Partially Observable Vacuum Cleaner Problem
@@ -1411,44 +1415,33 @@ In this lesson, our planning agent will take on a more challenging environment, 
   dirt in any other location
 
 <br>
-
-![belif_state_3](./images/belif_state_2.png)
-
+<img src="images/belif_state_2.png" width="800" height="auto" alt="vaccum_2">
 <br>
 
 
 ### Stochastic Environment Vacuum Cleaner Problem
 
 <br>
-
-![belif_state_3](./images/belif_state_3.png)
-
+<img src="images/belif_state_3.png" width="800" height="auto" alt="belif_state_3">
 <br>
 
 ### Infinite Sequences
 
 <br>
-
-![belif_state_4](./images/belif_state_4.png)
-
+<img src="images/belif_state_4.png" width="800" height="auto" alt="belif_state_4">
 <br>
 
 ### Finding a Successful Plan
 
 <br>
-
-<div align="center">
-   <img src="./images/belif_state_5.png" width="800" height="auto" alt="belif_state_5">
-</div>
-
+<img src="images/belif_state_5.png" width="800" height="auto" alt="belif_state_5">
 <br>
 
 <br>
+<img src="images/belif_state_6.png" width="800" height="auto" alt="belif_state_5">
+<br>
 
-<div align="center">
-   <img src="./images/belif_state_6.png" width="800" height="auto" alt="belif_state_5">
-</div>
-
+<br>
 <br>
 
 ### Problem Solving via Mathematical Notation
@@ -1457,68 +1450,71 @@ In a deterministic environment, we can observe the new state directly from the r
 
 However, in a stochastic and partially-observable environment, we can only rely on the belief state, rather than the state space of the world. We apply two-step process iteratively to find the goal or solution in the planning tree as follows:
 
-Predict(b, a), where b is the current belief state and a is the action, and
-Update(Predict(b, a), o), where o is the observation from taking an action above.
+1. Predict(b, a), where b is the current belief state and a is the action
+2. Update(Predict(b, a), o), where o is the observation from taking an action above.
 
 
 <br>
+<br>
 
-<div align="center">
-   <img src="./images/belif_state_7.png" width="800" height="auto" alt="belif_state_5">
-</div>
+<br>
+<img src="./images/belif_state_7.png" width="800" height="auto" alt="belif_state_5">
+<br>
 
+<br>
 <br>
 
 ### Tracking the-Predict Update Cycle
 
 
 <br>
-
-<div align="center">
-   <img src="./images/belif_state_8.png" width="800" height="auto" alt="belif_state_5">
-</div>
-
+<img src="./images/belif_state_8.png" width="800" height="auto" alt="belif_state_5">
 <br>
 
-In the next lesson, we will deep dive into a planning graph that utilizes this predict and update cycle. A planning graph is a special data structure that gives better heuristic estimates from the initial planning state to the goal states. It is a directed graph organized by alternate layers, between states and actions layers, with preconditions and effects of each action.
-
-
+In the Tracking the-Predict Update Cycle, we will use a planning graph that utilizes this predict and update cycle. A planning graph is a special data structure that gives better heuristic estimates from the initial planning state to the goal states. It is a directed graph organized by alternate layers, between states and actions layers, with preconditions and effects of each action.
 
 Sensorless vacuum cleaner's belief state space consists of:
 
-Nodes: the initial state and all possible new states after the agent takes an action.
-Edges: all possible actions for the agent to learn about its environment. In the sensorless vacuum cleaner example, the possible actions are move-left (L), move-right (R), or suck (S).
+1. Nodes: the initial state and all possible new states after the agent takes an action.
+2. Edges: all possible actions for the agent to learn about its environment. In the sensorless vacuum cleaner example, the possible actions are move-left (L), move-right (R), or suck (S).
 
-This example illustrates the transition from simple, fully observable environments to more complex, partially observable
-ones. In the real world, agents (like robots or AI systems) often have to deal with uncertainty and incomplete information.
-The concept of belief states allows us to model this uncertainty explicitly.
+<br>
+<br>
 
-Instead of knowing exactly which state the system is in, we maintain a set of possible states (the belief state). Actions
-then transform these belief states. The challenge becomes finding a sequence of actions that, regardless of the actual
-initial state, will lead to a desirable outcome.
+This example illustrates the transition from simple, fully observable environments to more complex, partially observable ones. In the real world, agents (like robots or AI systems) often have to deal with uncertainty and incomplete information. The concept of belief states allows us to model this uncertainty explicitly.
+
+Instead of knowing exactly which state the system is in, we maintain a set of possible states (the belief state). Actions then transform these belief states. The challenge becomes finding a sequence of actions that, regardless of the actual initial state, will lead to a desirable outcome.
 
 This approach is more powerful and flexible than traditional state-space search, as it can handle a wider range of real-world
 scenarios where perfect information is not available. It's a crucial concept in AI planning, robotics, and decision-making under
 uncertainty.
 
-Agent's belief state includes all 8 possible states (2 locations x 2 dirt conditions for each location). Let's explain this:
+<br>
+<br>
+
+Agent's belief state includes all **8 possible states** (2 locations x 2 dirt conditions for each location). Let's explain this:
+
+<br>
 
 1. There are 2 locations: A (left) and B (right)
-
 2. For each location, there are 2 possible dirt conditions:
-
    - Clean (no dirt)
    - Dirty (has dirt)
-
 3. The vacuum cleaner can be in either location A or B
 
-So, we calculate the total number of possible states:
+<br>
+<br>
 
-- Vacuum location options: 2 (A or B)
-- Dirt condition for location A: 2 (Clean or Dirty)
-- Dirt condition for location B: 2 (Clean or Dirty)
+Hence, we calculate the total number of possible states:
 
-Total combinations: 2 x 2 x 2 = 8 possible states
+1. Vacuum location options: 2 (A or B)
+2. Dirt condition for location A: 2 (Clean or Dirty)
+3. Dirt condition for location B: 2 (Clean or Dirty)
+
+Total combinations: **2 x 2 x 2 = 8** possible states
+
+<br>
+<br>
 
 These 8 states are:
 
@@ -1531,48 +1527,49 @@ These 8 states are:
 7. (Vacuum in B, A dirty, B clean)
 8. (Vacuum in B, A dirty, B dirty)
 
-In the sensorless scenario, because the vacuum cleaner can't determine its location or sense dirt, all of these 8 states
-are possible in its initial belief state. The agent must consider all these possibilities when planning its actions.
+<br>
+<br>
 
+In the sensorless scenario, because the vacuum cleaner can't determine its location or sense dirt, all of these 8 states are possible in its initial belief state. The agent must consider all these possibilities when planning its actions.
+
+<br>
+<br>
+
+### Planning in the Belief State Space
+
+<br>
 1. Belief State:
-
    - A belief state is a set of all possible actual states the agent might be in, given its lack of sensory information.
    - In the sensorless vacuum cleaner problem, because the agent can't sense its location or the presence of dirt, it must consider all possibilities.
 
 2. Initial Belief State:
-
    - At the start, the agent's belief state includes all 8 possible states (2 locations x 2 dirt conditions for each location).
    - This is represented by the box encompassing all states in the diagram.
 
 3. Actions and Belief State Transitions:
-
    - Move Left (L), Move Right (R), Suck (S)
    - When the agent takes an action, it transitions to a new belief state.
    - The new belief state represents all possible states the agent could be in after taking that action.
 
 4. Example Transitions:
-
    - If the agent moves right (R) from the initial belief state, its new belief state would exclude all left-side states.
    - If the agent sucks (S), its new belief state would include states where the current location (whichever it might be) is clean.
 
 5. Goal in Belief Space:
-
    - The goal is to reach a belief state where all possible states within it are goal states (i.e., both locations are clean).
 
 6. Planning in Belief Space:
    - The agent plans a sequence of actions that will lead from the initial belief state to a goal belief state.
    - This sequence must work regardless of which actual state the agent started in.
 
-The key idea is that instead of planning in the space of actual states (which the agent can't observe), it plans in the
-space of belief states, which represent its knowledge and uncertainty about the world. Each action updates this knowledge,
-narrowing down the possibilities until the agent can be certain it has achieved its goal.
+The key idea is that instead of planning in the space of actual states (which the agent can't observe), it plans in the space of belief states, which represent its knowledge and uncertainty about the world. Each action updates this knowledge, narrowing down the possibilities until the agent can be certain it has achieved its goal.
 
-Question:
-Which of the following plans will lead to a state where we know all squares are clean?
-Use 'L' for left, 'R' for right, and 'S' for suck.
+<br>
+<br>
 
-Correct Answer:
-None of these, and there does not exist a plan that will guarantee achieving the goal.
+**Question: Which of the following plans will lead to a state where we know all squares are clean? Use 'L' for left, 'R' for right, and 'S' for suck.**
+
+Correct Answer: None of these, and there does not exist a plan that will guarantee achieving the goal.
 
 Explanation:
 
@@ -1594,7 +1591,10 @@ This scenario demonstrates the challenges of planning in stochastic, partially o
 In such environments, instead of a guaranteed plan, we would typically use probabilistic approaches or policies that adapt over
 time, aiming to increase the likelihood of achieving the goal state without being able to guarantee it absolutely.
 
-Planning in Deterministic vs. Stochastic Environments
+<br>
+<br>
+
+**Planning in Deterministic vs. Stochastic Environments**
 
 1. Problem Representation:
    [A,S,F] - Likely represents Actions, States, and Functions/Goals
@@ -1604,7 +1604,6 @@ Planning in Deterministic vs. Stochastic Environments
    This indicates a sequence of actions and their results leading to the goal state.
 
 3. Deterministic Environments:
-
    - State transitions are predictable
    - Represented as: s1 = Result(s,a)
      Where:
@@ -1613,7 +1612,6 @@ Planning in Deterministic vs. Stochastic Environments
      a is the action taken
 
 4. Stochastic and Partially-Observable Environments:
-
    - State transitions are uncertain
    - Agent works with belief states rather than exact states
    - Two-step iterative process:
@@ -1629,17 +1627,14 @@ Planning in Deterministic vs. Stochastic Environments
      o is the observation after taking action a
 
 5. Key Differences:
-
    - Deterministic: Direct state observation
    - Stochastic: Belief state updates based on predictions and observations
 
 6. Implications for Planning:
-
    - Deterministic: Can plan a fixed sequence of actions
    - Stochastic: Requires adaptive planning, considering uncertainties
 
 7. Belief State Concept:
-
    - Represents a distribution over possible states
    - Updated based on actions and observations
    - Crucial for decision-making in uncertain environments
@@ -1652,7 +1647,10 @@ This approach allows for planning in environments where the outcomes of actions 
 of the world state is incomplete. It's a fundamental concept in AI planning for real-world scenarios where uncertainty and
 partial observability are common.
 
-Predict-Update Cycle and Planning Graphs in AI Planning
+<br>
+<br>
+
+**Predict-Update Cycle and Planning Graphs in AI Planning**
 
 1. Predict-Update Cycle in Stochastic Environments:
 
@@ -1732,12 +1730,14 @@ and actions may have unpredictable outcomes.
 
 
 
+<br>
+<br>
 
 
+# CHAPTER-3: Classical Planning
 
-
-# classical Planning
-
+<br>
+<br>
 
 ### Classical Planning State Space Representation
 
