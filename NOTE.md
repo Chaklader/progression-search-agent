@@ -2127,7 +2127,6 @@ represent the change in the plane's location after the flight.
 
 ### Plan Space Search
 
-
 The action is called "Slide(t,a,b)" where t, a, and b are parameters.
 
 Action (Slide (t,a,b)
@@ -2149,11 +2148,18 @@ Effects (EFF):
 - ¬On(t,a): Object t is no longer on position a
 - ¬Blank(b): Position b is no longer blank
 
+<br>
+<br>
+
 This appears to be a formal representation of a sliding tile puzzle action, where:
+
 1. You can only slide a tile to an adjacent blank space
 2. When you slide a tile, it moves from its current position to the blank position
 3. The original position becomes blank
 4. The destination is no longer blank
+
+<br>
+<br>
 
 This is written in a logical notation where:
 - ∧ represents AND
@@ -2163,6 +2169,8 @@ This is written in a logical notation where:
 
 This kind of formal representation is commonly used in automated planning systems to define valid moves and their consequences in a problem space.
 
+<br>
+<br>
 
 ### Situation Calculus
 
@@ -2171,16 +2179,16 @@ Situation Calculus is a logical formalism used in artificial intelligence and ro
 Key concepts of Situation Calculus include:
 
 1. Situations: These represent complete snapshots of the world at a particular moment. Each situation captures the state of all objects and their relationships.
-
 2. Fluents: These are properties or relations that can change over time. They take a situation as their last argument. For example, On(block,table,s) means "block is on table in situation s".
-
 3. Actions: These are functions that transform one situation into another. Each action has:
    - Preconditions: What must be true for the action to be possible
    - Effects: How the action changes the world state
-
 4. Result Function: Written as do(action, situation), this represents the new situation that results from performing an action in a given situation.
 
-For example, in your sliding puzzle action from the previous image, we could represent it in situation calculus as:
+<br>
+<br>
+
+For example, in the sliding puzzle action, we could represent it in situation calculus as:
 
 ```
 On(t,a,s) ∧ Tile(t) ∧ Blank(b,s) ∧ Adj(a,b) →
@@ -2190,6 +2198,9 @@ On(t,a,s) ∧ Tile(t) ∧ Blank(b,s) ∧ Adj(a,b) →
    ¬Blank(b,do(slide(t,a,b),s))]
 ```
 
+<br>
+<br>
+
 Situation Calculus is particularly useful for:
 - Planning problems
 - Reasoning about action sequences
@@ -2198,8 +2209,10 @@ Situation Calculus is particularly useful for:
 
 The main challenge with Situation Calculus is that it can become computationally expensive for complex domains, as the situation terms grow longer with each action.
 
+<br>
+<br>
 
-```textmate
+```
 Situation Calculus
 First order logic (FOL)
 
@@ -2210,6 +2223,9 @@ SomePrecond(s) ⇒ Poss(a,s)
 
 Plane(p,s) ∧ Airport(x,s) ∧ Airport(y,s) ∧ At(p,x,s) ⇒ Poss(Fly(p,x,y),s)
 ```
+
+<br>
+<br>
 
 Situation Calculus using first-order logic, specifically illustrating an airplane flying example:
 
@@ -2232,8 +2248,10 @@ Situation Calculus using first-order logic, specifically illustrating an airplan
 
 This formalization allows for reasoning about actions and their effects in a dynamic world, particularly useful for automated planning systems.
 
+<br>
+<br>
 
-```textmate
+```
 Situation Calculus
 Successor - State Axioms
 
@@ -2250,11 +2268,14 @@ Initial state: S₀
 Goal    ∃s ∀c    Cargo(c)⇒ At(c,SFO,s)
 ```
 
-### Situation Calculus: Successor - State Axioms
+<br>
+<br>
 
-Once we've described this in the ordinary language of first order logic. We don't need any special programs to manipulate it and come up with the solution. Because we already have theorem provers for first order logic
+### Situation Calculus: Successor State Axioms
 
-This example shows a cargo transportation problem using Situation Calculus. Let me break it down:
+<br>
+
+Once we've described this in the ordinary language of first order logic. We don't need any special programs to manipulate it and come up with the solution. Because we already have theorem provers for first order logic. This example shows a cargo transportation problem using Situation Calculus. Let me break it down:
 
 1. Successor State Axioms:
    - These describe how fluents (changeable properties) evolve after actions
@@ -2279,7 +2300,8 @@ This example shows a cargo transportation problem using Situation Calculus. Let 
 
 This formalization enables automated planning systems to find sequences of actions (loading, flying, unloading) that will achieve the goal of moving all cargo from JFK to SFO.
 
-
+<br>
+<br>
 
 Sliding Puzzle Action Schema:
 
@@ -2302,7 +2324,9 @@ Sliding Puzzle Action Schema:
    - ¬On(t,a): Tile t is no longer on position a
    - ¬Blank(b): Position b is no longer blank
 
-Key Points:
+**Key Points:**
+
+<br>
 
 1. This action represents sliding a tile from one position to an adjacent empty position.
 2. The puzzle consists of tiles and blank spaces on a grid.
@@ -2310,7 +2334,9 @@ Key Points:
 4. Each move changes the state of two positions: the start and destination.
 5. The action preserves the overall structure of the puzzle (number of tiles and blank spaces).
 
-Implications for Planning:
+**Implications for Planning:**
+
+<br>
 
 - The planner must consider the arrangement of tiles and blank spaces.
 - Only one tile can be moved at a time.
@@ -2320,21 +2346,12 @@ Implications for Planning:
 This action schema forms the basis for solving sliding puzzle problems in automated planning systems. It defines the rules
 and constraints of the puzzle, allowing a planner to generate valid sequences of moves to reach a goal configuration.
 
-Situation Calculus in AI Planning
+Situation Calculus, when expressed in the ordinary language of first-order logic, doesn't require specialized programs for manipulation or solution finding. This is because existing theorem provers for first-order logic can be utilized to reason about the actions and states described in the Situation Calculus framework. Essentially, it highlights the advantage of using a well-established logical system to handle planning and reasoning tasks in AI.
 
-Situation Calculus
-Successor - State Axioms
+<br>
+<br>
 
-Once we've described this in the ordinary language
-of first order logic
-
-We don't need any special programs to manipulate
-it and come up with the solution
-
-Because we already have
-theorem provers for first order logic
-
-```textmate
+```
 Situation Calculus
 First order logic (FOL)
 
@@ -2348,10 +2365,10 @@ Plane(p,s) ∧ Airport(x,s) ∧ Airport(y,s) ∧ At(p,x,s) ⇒
                     Poss(Fly(p,x,y)
 ```
 
-```textmate
-Situation Calculus
-Successor - State Axioms
+<br>
+<br>
 
+```
 At (p,x,s)
 ∀a, s Poss (a,s) ⇒ (fluent true ⇔ a made it true)
 ∨ a didn't undo)
@@ -2361,10 +2378,10 @@ Poss (a,s) ⇒ In(c,p,result(s,a)) ⇔
 a≠Unload(c,p,x)))
 ```
 
-```textmate
-Situation Calculus
-Successor - State Axioms
+<br>
+<br>
 
+```
 At (p,x,s)
 ∀a, s Poss (a,s) ⇒ (fluent true ⇔ a made it true)
 ∨ a didn't undo)
@@ -2380,43 +2397,46 @@ At (c,JFK,S0)
 Goal  ∃s ∀c  Cargo(c)⇒ At (c,SFO,s)
 ```
 
-1. Introduction to Situation Calculus:
-   Situation Calculus is a logical formalism used in artificial intelligence for representing and reasoning about dynamic worlds.
-   It's particularly useful in AI planning, where we need to model how actions change the state of the world.
+<br>
+<br>
 
-2. Key Components:
+### Introduction to Situation Calculus:
 
-a) Actions: Objects that represent things that can be done.
-Example: Fly(p,x,y) - representing a plane p flying from x to y
+Situation Calculus is a logical formalism used in artificial intelligence for representing and reasoning about dynamic worlds.
+It's particularly useful in AI planning, where we need to model how actions change the state of the world.
 
-b) Situations: Objects that represent the state of the world.
+<br>
+<br>
 
-- S0: Initial state
-- S' = Result(s,a): The situation that results from performing action a in situation s
+**Key Components:**
 
-c) Fluents: Properties that can change over time.
+1. Actions: Objects that represent things that can be done. Example: Fly(p,x,y) - representing a plane p flying from x to y
+2. Situations: Objects that represent the state of the world.
+   - S0: Initial state
+   - S' = Result(s,a): The situation that results from performing action a in situation s
+3. Fluents: Properties that can change over time.
 Example: At(p,x,s) - true if plane p is at location x in situation s
 
-3. First-Order Logic (FOL) Representation:
-   Situation Calculus uses first-order logic to describe the world and its changes. This allows us to use existing theorem
-   provers for first-order logic to reason about dynamic situations.
+**First-Order Logic (FOL) Representation:**
 
-4. Key Predicates:
+Situation Calculus uses first-order logic to describe the world and its changes. This allows us to use existing theorem provers for first-order logic to reason about dynamic situations.
 
-a) Poss(a,s): Action a is possible in situation s
-b) SomePreCond(s) ⇒ Poss(a,s): Some precondition must be true for an action to be possible
+**Key Predicates:**
 
-5. Axioms:
+1. Poss(a,s): Action a is possible in situation s
+2. SomePreCond(s) ⇒ Poss(a,s): Some precondition must be true for an action to be possible
 
-a) Successor-State Axioms:
+**Axioms:**
+
+1. Successor-State Axioms:
 These describe how fluents change with actions. For example:
 At(p,x,s) ∧ ∀a, s Poss(a,s) ⇒ (fluent true ⇔ a made it true ∨ a didn't undo)
 
-b) Action Precondition Axioms:
+2. Action Precondition Axioms:
 Example for the Fly action:
 Plane(p,s) ∧ Airport(x,s) ∧ Airport(y,s) ∧ At(p,x,s) ⇒ Poss(Fly(p,x,y),s)
 
-6. Example Scenario - Cargo Transport:
+**Example Scenario - Cargo Transport:**
 
 Initial state: At(P1,JFK,S0) ∀c Cargo(c) ⇒ At(c,JFK,S0)
 Goal: ∃s ∀c Cargo(c) ⇒ At(c,SFO,s)
@@ -2424,33 +2444,29 @@ Goal: ∃s ∀c Cargo(c) ⇒ At(c,SFO,s)
 This represents a scenario where a plane P1 and all cargo start at JFK airport, and the goal is to have all cargo at SFO
 airport in some future situation.
 
-7. Planning Process:
-   To solve this problem, an AI planner would:
+**Planning Process:**
+
+To solve this problem, an AI planner would:
+
 1. Start from the initial state S0
-1. Use the axioms to determine possible actions
-1. Apply actions to generate new situations
-1. Continue until it reaches a situation that satisfies the goal condition
+2. Use the axioms to determine possible actions
+3. Apply actions to generate new situations
+4. Continue until it reaches a situation that satisfies the goal condition
 
-1. Advantages of Situation Calculus:
+<br>
 
+**Advantages of Situation Calculus:**
 - Provides a formal, logical framework for reasoning about actions and change
 - Can handle complex scenarios with multiple objects and actions
 - Allows for the use of existing theorem provers for first-order logic
 
-9. Challenges:
-
+**Challenges:**
 - Can be computationally expensive for complex scenarios
 - Requires careful formulation of axioms to avoid inconsistencies
 
 By using Situation Calculus, AI planners can formally represent and reason about complex, dynamic worlds, enabling them to
 solve sophisticated planning problems.
 
-# Heuristic Overview
 
-Heuristics derived from the planning graph are defined in Chapter 10 of Artificial Intelligence: a Modern Approach (AIMA) 3rd edition (Chapter 11 in the 2nd edition–linked in the project readme). The pseudocode below provides functional descriptions of the three planning graph heuristics that must be implemented for this project.
-
-Note that the pseudocode is _accurate_, but it isn't necessarily _efficient_ to compute them this way. The most significant inefficiency is that each function starts by building a _complete_ planning graph until it levels off. However, in many cases the heuristics can be computed before the full planning graph is built. See the last section below for an example of changing the pseudocode for the MaxLevel heuristic so that it incrementally constructs the planning graph, cutting the runtime for that heuristic on most problems in half. You should discuss the other heuristics below with your peers to look for more efficient implementations.
-
-## LevelCost
-
-The level cost is a helper function used by MaxLevel and LevelSum. The level cost of a goal is equal to the level number of the first literal layer in the planning graph where the goal literal appears.
+<br>
+<br>
