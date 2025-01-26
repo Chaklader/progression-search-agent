@@ -205,6 +205,7 @@ def best_first_graph_search(problem, f):
     There is a subtlety: the line "f = memoize(f, 'f')" means that the f
     values will be cached on the nodes as they are computed. So after doing
     a best first search you can examine the f values of the path returned."""
+    
     f = memoize(f, 'f')
     node = Node(problem.initial)
     if problem.goal_test(node.state):
