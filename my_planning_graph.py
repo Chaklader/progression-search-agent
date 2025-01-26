@@ -18,7 +18,6 @@ class ActionLayer(BaseActionLayer):
         --------
         layers.ActionNode
         """
-        # TODO: implement this function
         for effect_a in self.children[actionA]:
             if ~effect_a in self.children[actionB]:
                 return True
@@ -38,7 +37,6 @@ class ActionLayer(BaseActionLayer):
         --------
         layers.ActionNode
         """
-        # TODO: implement this function
         for effect_a in self.children[actionA]:
             if ~effect_a in self.parents[actionB]:
                 return True
@@ -59,7 +57,6 @@ class ActionLayer(BaseActionLayer):
         layers.ActionNode
         layers.BaseLayer.parent_layer
         """
-        # TODO: implement this function
         for precond_a in self.parents[actionA]:
             for precond_b in self.parents[actionB]:
                 if self.parent_layer.is_mutex(precond_a, precond_b):
@@ -80,7 +77,6 @@ class LiteralLayer(BaseLiteralLayer):
         --------
         layers.BaseLayer.parent_layer
         """
-        # TODO: implement this function
         for action_a in self.parents[literalA]:
             for action_b in self.parents[literalB]:
                 if not self.parent_layer.is_mutex(action_a, action_b):
@@ -153,7 +149,6 @@ class PlanningGraph:
         --------
         Russell-Norvig 10.3.1 (3rd Edition)
         """
-        # TODO: implement this function
         self.fill()  # Fill the planning graph
         costs = {}
         for goal in self.goal:
@@ -228,7 +223,6 @@ class PlanningGraph:
         -----
         WARNING: you should expect long runtimes using this heuristic on complex problems
         """
-        # TODO: implement setlevel heuristic
         set_level = 0
 
         while True:
