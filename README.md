@@ -1,123 +1,167 @@
-## Introduction
-Planning is an important topic in AI because intelligent agents are expected to automatically plan their own actions in uncertain domains. Planning and scheduling systems are commonly used in automation and logistics operations, robotics and self-driving cars, and for aerospace applications like the Hubble telescope and NASA Mars rovers.
+# Air-Cargo Progression Search Planner
 
-This project is split between implementation and analysis. First you will combine symbolic logic and classical search to implement an agent that performs progression search to solve planning problems. Then you will experiment with different search algorithms and heuristics, and use the results to answer questions about designing planning systems.
+A classical AI planning agent that solves **Air-Cargo logistics** problems using **progression (forward) state–space search**.  The project is adapted from the Udacity *AI for Robotics* Nanodegree and implements several heuristic functions based on **planning graphs** to guide the search.
 
-Read all of the instructions below and the project rubric [here](https://review.udacity.com/#!/rubrics/1800/view) carefully before starting the project so that you understand the requirements for successfully completing the project. Understanding the project requirements will help you avoid repeating parts of the experiment, some of which can have long runtimes.
+<p align="center">
+<img src="images/Progression.PNG" alt="Progression air cargo search" width="600" height="auto">
+</p>
 
-**NOTE:** You should read "Artificial Intelligence: A Modern Approach" 3rd edition chapter 10 *or* 2nd edition Chapter 11 on Planning, available [on the AIMA book site](http://aima.cs.berkeley.edu/2nd-ed/newchap11.pdf) before starting this project.
+---
 
-See the [Project Enhancements](#optional-project-enhancements) section at the end for additional notes about limitations of the code in this exercise.
+## Table of Contents
+1. [Project Overview](#project-overview)
+2. [Algorithms & Heuristics](#algorithms--heuristics)
+3. [Repository Layout](#repository-layout)
+4. [Installation](#installation)
+5. [Quick Start](#quick-start)
+6. [Running Experiments](#running-experiments)
+7. [Unit Tests](#unit-tests)
+8. [Report Generation](#report-generation)
+9. [Troubleshooting & FAQ](#troubleshooting--faq)
+10. [Contributing](#contributing)
+11. [License](#license)
 
-![Progression air cargo search](images/Progression.PNG)
+---
 
+## Project Overview
+The agent's task is to find a sequence of actions that transports cargo between a set of airports while obeying domain constraints (loading/unloading cargo, flying planes, etc.).  Each Air-Cargo problem instance differs in the number of cargos, planes and airports, resulting in exponentially larger search spaces.
 
-## Getting Started (Workspaces)
-The easiest way to complete the project is to click "next" below to open a Workspace that has already been configured with the required files and libraries to support the project. (NOTE: Workspaces does not currently support pypy3, so your code will run slower than completing the project locally if you install pypy3.) 
+Your objectives in this repository are:
+1. **Implement Planning-Graph heuristics** in `my_planning_graph.py`:
+   * `h_levelsum`
+   * `h_maxlevel`
+   * `h_setlevel`
+2. **Define mutex checks** for actions and literals.
+3. **Compare uninformed and informed search algorithms** on four problem instances using `run_search.py`.
+4. **Analyse the results** and summarise findings in `report.pdf`.
 
-If you use the Workspace, you do NOT need to perform any of the setup steps outlined below. Skip to the next section with instructions for completing the project.
+---
 
-**NOTE:** Workspace sessions will time out if there is no detected user activity for a period of time (about half an hour). You can lose progress if your session terminates due to timeout while an experiment is running. (Using the mouse to interact in the Workspace window periodically should keep the connection alive.)
+## Algorithms & Heuristics
+The planner can be paired with any of the search or heuristic combinations below (indices refer to the menu in *run_search.py*):
 
-## Getting Started (Local Environment)
-If you would prefer to complete the exercise in your own local environment, then follow the steps below:
+| # | Search Function                        | Heuristic | Optimal? |
+|---|----------------------------------------|-----------|----------|
+| 1 | Breadth-First Search                   | –         | Yes      |
+| 2 | Depth-First Graph Search               | –         | No       |
+| 3 | Uniform-Cost Search                    | –         | Yes      |
+| 4 | Greedy Best-First Graph Search         | `h_unmet_goals` | No |
+| 5 | Greedy Best-First Graph Search         | `h_pg_levelsum` | No |
+| 6 | Greedy Best-First Graph Search         | `h_pg_maxlevel` | No |
+| 7 | Greedy Best-First Graph Search         | `h_pg_setlevel` | No |
+| 8 | A* Search                              | `h_unmet_goals` | Yes |
+| 9 | A* Search                              | `h_pg_levelsum` | Yes |
+|10 | A* Search                              | `h_pg_maxlevel` | Yes |
+|11 | A* Search                              | `h_pg_setlevel` | Yes |
 
-**NOTE:** You are _strongly_ encouraged to install pypy 3.5 (download [here](http://pypy.org/download.html)) for this project. Pypy is an alternative to the standard cPython runtime that tries to optimize and selectively compile your code for improved speed, and it can run 2-10x faster for this project. There are binaries available for Linux, Windows, and OS X. Simply download and run the appropriate pypy binary installer (make sure you get version 3.5) or use the package manager for your OS. When properly installed, any `python` commands can be run with `pypy` instead. (You may need to specify `pypy3` on some OSes.)
+The planning-graph heuristics are inspired by Russell & Norvig, *Artificial Intelligence – A Modern Approach* (3rd ed.), §10.3:
+* **Level-Sum** – sum of the cost (graph level) at which each goal literal first appears.
+* **Max-Level** – maximum single-goal level cost.
+* **Set-Level** – first level in which all goals appear **and** none are pairwise mutex.
 
-- Activate the aind environment (OS X or Unix/Linux users use the command shown; Windows users only run `activate aind`)
+---
+
+## Repository Layout
 ```
-$ source activate aind
+.
+├── air_cargo_problems.py   # Concrete Air-Cargo problem generators (P1–P4)
+├── my_planning_graph.py    # TODO: implement graph heuristics here
+├── run_search.py           # CLI for running experiments
+├── planning_problem.py     # Abstract search problem definition (provided)
+├── _utils.py               # Helper classes & functions (FluentState, encoding,…)
+├── tests/                  # Unit tests executed by `python -m unittest -v`
+├── images/                 # Figures used in this README
+└── README.md               # You are here ✔︎
 ```
 
-## Instructions
+> The project depends on the `aimacode` package (bundled in the *lectures* directory) and requires **Python 3.8+**.
 
-1. Start by running the example problem (this example implements the "have cake" problem from Fig 10.7 of AIMA 3rd edition). The script will print information about the problem domain and solve it with several different search algorithms, however these algorithms cannot solve larger, more complex problems so next you'll have to implement a few more sophisticated heuristics.
+---
+
+## Installation
+1. **Clone the repo**
+```bash
+$ git clone https://github.com/<you>/progression-search-agent.git
+$ cd progression-search-agent
 ```
-$ python example_have_cake.py
+2. *(Optional but recommended).* **Create a virtual-environment**
+```bash
+$ python -m venv venv
+$ source venv/bin/activate  # Windows: venv\Scripts\activate
+```
+3. **Install dependencies** (none from PyPI are strictly required, but we pin `aimacode` utilities for safety):
+```bash
+$ pip install -r requirements.txt  # if provided
+```
+4. *(Optional)* **Use PyPy 3** for a 2-10× speed-up:
+```bash
+$ brew install pypy3            # macOS example
+$ pypy3 run_search.py -m        # run planner with PyPy
 ```
 
-2. Open `my_planning_graph.py` and complete the TODO sections. Documentation for the planning graph classes is provided in the docstrings and examples [here](examples.md). Refer to the heuristics pseudocode [here](pseudocode/heuristics.md), chapter 10 of AIMA 3rd edition or chapter 11 of AIMA 2nd edition (available [on the AIMA book site](http://aima.cs.berkeley.edu/2nd-ed/newchap11.pdf)) and the detailed instructions inline with each TODO statement for help. You should implement the following functions:
+---
 
-  - `ActionLayer._inconsistent_effects`
-  - `ActionLayer._interference`
-  - `ActionLayer._competing_needs`
-  - `LiteralLayer._inconsistent_support`
-  - `LiteralLayer._negation`
-  - `PlanningGraph.h_levelsum`
-  - `PlanningGraph.h_maxlevel`
-  - `PlanningGraph.h_setlevel`
-
-After you complete each function, test your solution by running `python -m unittest -v`. **YOU SHOULD PASS EACH TEST CASE IN ORDER.** Some of the later test cases depend on correctly implementing the earlier functions, so working on the test cases out of order will be more difficult.
-
-
-3. Experiment with different search algorithms using the `run_search.py` script. (See example usage below.) The goal of your experiment is to understand the tradeoffs in speed, optimality, and complexity of progression search as problem size increases. You will record your results in a report (described below in [Report Requirements](#report-requirements)).
-
-  - Run the search experiment manually (you will be prompted to select problems & search algorithms)
-```
+## Quick Start
+Run the solver interactively:
+```bash
 $ python run_search.py -m
 ```
+You will be prompted to pick 1…4 problems and one or more search algorithms.
 
-  - You can also run specific problems & search algorithms - e.g., to run breadth first search and UCS on problems 1 and 2:
+Run *Problem 1* with Uniform-Cost Search directly:
+```bash
+$ python run_search.py -p 1 -s 3
 ```
-$ python run_search.py -p 1 2 -s 1 2
+Run *Problems 1 & 2* with Breadth-First and Greedy-Best-First (Level-Sum heuristic):
+```bash
+$ python run_search.py -p 1 2 -s 1 5
 ```
 
+---
 
-### Experiment with the planning algorithms
+## Running Experiments
+The experiment script prints:
+* plan length (number of actions),
+* number of node expansions,
+* search time.
 
-The `run_search.py` script allows you to choose any combination of eleven search algorithms (three uninformed and eight with heuristics) on four air cargo problems. The cargo problem instances have different numbers of airplanes, cargo items, and airports that increase the complexity of the domains.
+Use this data to populate tables/figures for your **report**.  For reproducible timing results it is recommended to:
+```bash
+$ python -OO -m timeit -n1 -r3 -- run_search.py -p 1 2 3 4 -s 3 5 9
+```
 
-- You should run **all** of the search algorithms on the first two problems and record the following information for each combination:
-    - number of actions in the domain
-    - number of new node expansions
-    - time to complete the plan search
+---
 
-- Use the results from the first two problems to determine whether any of the uninformed search algorithms should be excluded for problems 3 and 4. You must run **at least** one uninformed search, two heuristics with greedy best first search, and two heuristics with A* on problems 3 and 4.
+## Unit Tests
+Ensure your implementation passes all tests **before** running large experiments:
+```bash
+$ python -m unittest -v
+```
+A green test-suite implies that the heuristics/mutex logic in `my_planning_graph.py` is likely correct.
 
+---
 
-## Report Requirements
+## Report Generation
+Create `report.pdf` containing:
+1. Tables/plots of **nodes expanded vs. domain size** and **search time vs. domain size**.
+2. Plan lengths for every algorithm/problem combination.
+3. Answers to the three analysis questions listed in this README.
 
-Your submission for review **must** include a report named "report.pdf" that includes all of the figures (charts or tables) and written responses to the questions below. You may plot multiple results for the same topic on the same chart or use multiple charts. (Hint: you may see more detail by using log space for one or more dimensions of these charts.)
+Include any scripts/notebooks you used to generate plots in a `/notebooks` or `/analysis` folder (optional).
 
-- Use a table or chart to analyze the number of nodes expanded against number of actions in the domain
-- Use a table or chart to analyze the search time against the number of actions in the domain
-- Use a table or chart to analyze the length of the plans returned by each algorithm on all search problems
+---
 
-Use your results to answer the following questions:
+## Troubleshooting & FAQ
+* **`RecursionError`** during deep search – try PyPy 3 or limit depth with UCS/A*.
+* **Long runtimes** on Problems 3 & 4 – prune the uninformed search list; at least one uninformed algorithm must still be included per rubric.
+* **Memory usage** – breadth-first can explode in memory; if you run out, exclude it from large problems.
 
-- Which algorithm or algorithms would be most appropriate for planning in a very restricted domain (i.e., one that has only a few actions) and needs to operate in real time?
+---
 
-- Which algorithm or algorithms would be most appropriate for planning in very large domains (e.g., planning delivery routes for all UPS drivers in the U.S. on a given day)
+## Contributing
+Pull requests are welcome for typo fixes, improved documentation, or performance tweaks.  For larger changes please open an issue first to discuss your ideas.
 
-- Which algorithm or algorithms would be most appropriate for planning problems where it is important to find only optimal plans?
+---
 
-## Evaluation
-
-Your project will be reviewed by a Udacity reviewer against the project rubric [here](https://review.udacity.com/#!/rubrics/1800/view). Review this rubric thoroughly, and self-evaluate your project before submission. All criteria found in the rubric must meet specifications for you to pass.
-
-
-
-
-## (Optional) Project Enhancements
-
-You will find in this project that even trivial planning problems become intractable for domain-independent planning. (The search space for planning problems grows exponentially with problem size.) However, this code can be used as a basis to explore automated planning more deeply by incorporating optimizations or additional planning algorithms (like GraphPlan) to create a more robust planner.
-
-1. Static code optimizations
-	- Several optimizations have been omitted for simplicity. For example, the `Expr` class used for symbolic representations of the actions and literals is _very_ slow (the time to do basic operations like negating an object can be 1000x slower than more optimal representations). And the inconsistent effects, interference, and negation mutexes are static for a given problem domain; they do not need to be checked each time a layer is added to the planning graph.
-
-2. Optimize the planning graph implementaion (ref. section 6 [Planning graph as the basis for deriving heuristics
-for plan synthesis by state space and CSP search](https://ac.els-cdn.com/S0004370201001588/1-s2.0-S0004370201001588-main.pdf?_tid=571411a9-859b-4a29-83c7-686d44673011&acdnat=1523663582_550f8fef02020c1c90bf6ef1caef3eaa))
-    - One way to implement a much faster planning graph uses a bi-level structure to reduce construction time and memory consumption. The complete list of states and complete list of actions are known when the planning graph instance is created (they're static), and the set of static mutexes is also fixed. A single list can be used to track the first layer at which each literal or action enter the planning graph (they will remain in the graph in all future layers), and a single list can be used to track when mutexes first leave the graph (they will remain out of the graph in all future layers).
-
-3. Use a different language
-	- Python is slow. Using a faster language can deliver a few orders of magnitude faster performance, which can make non-trivial problem domains feasible. The planning graph is particularly inefficient, in part due to idiosyncrasies of Python with an implementation designed for _clarity_ rather than performance. The [Europa](https://github.com/nasa/europa) planner from NASA should be much faster.
-
-4. Build your own problems
-    - The air cargo domain problems implemented for you were chosen to represent various changes in complexity. There are many other problems that you could implement on your own. For example, the block world problem and spare tire problem in the AIMA textbook. You can also find examples online of planning domain problems. Implement one or more problems beyond the air cargo domain and see how your planner works in those domains.
-
-
-### Additional Search Topics
-
-- Regression search with GraphPlan (ref. [GraphPlan](https://github.com/aimacode/aima-pseudocode/blob/master/md/GraphPlan.md) in the AIMA pseudocode). Regression search can be very fast in some problem domains, but progression search has been more popular in recent years because it is more easily extended to real-world problems, for example to support resource constraints (like planning for battery recharging in mobile robots).
-
-- Progression search with Monte Carlo Tree Search (e.g., ["Using Monte Carlo Tree Search to Solve Planning Problems in Transportation Domains"](https://link.springer.com/chapter/10.1007%2F978-3-642-45111-9_38))
+## License
+This project is released under the MIT License.  Portions of the code are adapted from Udacity AI Nanodegree course materials and the AIMA Python repository by Norvig *et al.*
