@@ -106,7 +106,7 @@ $ python -m venv venv
 $ source venv/bin/activate        # Windows: venv\Scripts\activate
 ```
 
-3. **You're all set!**  The project has **no external dependencies** beyond the Python standard library.  
+3. **You're all set!**  The project has **no external dependencies** beyond the Python standard library.
    The AIMA helpers (`aimacode`) are already included in `lectures/`, so you can skip any `pip install` step.
 
 4. _(Optional)_ **Use PyPy 3** for a 2-10× speed-up:
@@ -123,7 +123,7 @@ $ pypy3 run_search.py -m          # run planner with PyPy
 Run the solver interactively:
 
 ```bash
-$ pypy3 run_search.py -m # can also use python but pypy is 2-10x faster 
+$ pypy3 run_search.py -m # can also use python but pypy is 2-10x faster
 ```
 
 You will be prompted to pick 1…4 problems and one or more search algorithms.
@@ -150,10 +150,16 @@ The experiment script prints:
 - number of node expansions,
 - search time.
 
-Use this data to populate tables/figures for your **report**. For reproducible timing results it is recommended to:
+Use this data to populate tables/figures for your **report**. For reproducible timing results, `pyperf` is recommended (as `timeit` can be unreliable for scripts):
 
+First, install `pyperf` using PyPy's pip if you haven't already:
 ```bash
-$ python -OO -m timeit -n1 -r3 -- run_search.py -p 1 2 3 4 -s 3 5 9
+$ pypy3 -m pip install pyperf
+```
+Then, run the benchmark (this translates `timeit -n1 -r3` to `pyperf` options for loops and runs per worker):
+```bash
+# 3 runs (-n 3) of the script, with a single outer loop each (-l 1)
+$ pypy3 -m pyperf command -n 3 -l 1 -- python run_search.py -p 1 2 3 4 -s 3 5 9
 ```
 
 ---
@@ -163,7 +169,7 @@ $ python -OO -m timeit -n1 -r3 -- run_search.py -p 1 2 3 4 -s 3 5 9
 Ensure your implementation passes all tests **before** running large experiments:
 
 ```bash
-$ python -m unittest -v
+$ pypy3 -m unittest -v
 ```
 
 A green test-suite implies that the heuristics/mutex logic in `my_planning_graph.py` is likely correct.
