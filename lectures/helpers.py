@@ -8,7 +8,7 @@ from collections import deque
 
 # Map services and data available from U.S. Geological Survey, National Geospatial Program.
 # Please go to http://www.usgs.gov/visual-id/credit_usgs.html for further information
-united_states_map = mpimg.imread("map.png")  # US States & Capitals map
+united_states_map = mpimg.imread("data/map.png")  # US States & Capitals map
 
 # List of 30 US state capitals and corresponding coordinates on the map
 with open('data/capitals.json', 'r') as capitals_file:
