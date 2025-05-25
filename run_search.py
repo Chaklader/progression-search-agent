@@ -1,12 +1,16 @@
-
+import sys
+from pathlib import Path
 import argparse
 
-from aimacode.search import (breadth_first_search, astar_search,
-    breadth_first_tree_search, depth_first_graph_search, uniform_cost_search,
-    greedy_best_first_graph_search, depth_limited_search,
-    recursive_best_first_search)
-from air_cargo_problems import air_cargo_p1, air_cargo_p2, air_cargo_p3, air_cargo_p4
+# Add lectures directory to Python path
+sys.path.insert(0, str(Path(__file__).parent / "lectures"))
 
+from aimacode.search import (
+    breadth_first_search, astar_search,
+    depth_first_graph_search, uniform_cost_search,
+    greedy_best_first_graph_search
+)
+from air_cargo_problems import air_cargo_p1, air_cargo_p2, air_cargo_p3, air_cargo_p4
 from _utils import run_search
 
     ##############################################################################
@@ -66,6 +70,41 @@ def manual():
         __file__, " ".join(p_choices), " ".join(s_choices)))
 
 
+"""
+Air Cargo Problem Search Script
+
+Usage:
+    python run_search.py [-h] [-m] [-p PROBLEMS] [-s SEARCHES]
+
+Options:
+    -h, --help      Show this help message and exit
+    -m, --manual    Manual mode: select problems and searches interactively
+    -p PROBLEMS     Comma-separated list of problem numbers to solve (1-4)
+    -s SEARCHES     Comma-separated list of search algorithms to run (1-8)
+
+Problem Choices (-p):
+    1: Air Cargo Problem 1 - Initial state has all packages at airport 1
+    2: Air Cargo Problem 2 - More complex initial state with packages split between airports
+    3: Air Cargo Problem 3 - Larger problem with more packages and planes
+    4: Air Cargo Problem 4 - Most complex problem with multiple packages and planes
+
+Search Algorithm Choices (-s):
+    1: Breadth First Search
+    2: Depth First Search
+    3: Uniform Cost Search
+    4: Greedy Best First Graph Search with h_1 heuristic
+    5: A* Search with h_1 heuristic
+    6: A* Search with h_ignore_preconditions heuristic
+    7: A* Search with h_pg_levelsum heuristic
+    8: Recursive Best First Search with h_1 heuristic
+
+Examples:
+    # Run problem 1 with search algorithm 3 (Uniform Cost Search)
+    pypy run_search.py -p 1 -s 3
+    
+    # Interactive mode to select problems and searches
+    pypy run_search.py -m
+"""
 def main(p_choices, s_choices):
     problems = [PROBLEMS[i-1] for i in map(int, p_choices)]
     searches = [SEARCHES[i-1] for i in map(int, s_choices)]
