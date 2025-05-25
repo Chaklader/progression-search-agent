@@ -1,7 +1,10 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent / "lectures"))
+
 from itertools import chain, combinations
 from aimacode.planning import Action
 from aimacode.utils import expr
-
 from layers import BaseActionLayer, BaseLiteralLayer, makeNoOp, make_node
 
 

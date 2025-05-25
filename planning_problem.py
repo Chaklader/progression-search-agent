@@ -1,9 +1,10 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent / "lectures"))
 
 from functools import lru_cache
-
 from aimacode.logic import PropKB
 from aimacode.search import Node, Problem
-
 from _utils import encode_state, decode_state
 from my_planning_graph import PlanningGraph
 
