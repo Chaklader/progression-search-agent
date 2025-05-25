@@ -13,12 +13,14 @@ from aimacode.search import (
 from aimacode.utils import expr
 
 from _utils import (
-    FluentState, encode_state, make_relations, run_search
+    FluentState, make_relations, run_search
 )
 from planning_problem import BasePlanningProblem
-    ##############################################################################
-    #                 YOU DO NOT NEED TO MODIFY CODE IN THIS FILE                #
-    ##############################################################################
+
+
+##############################################################################
+#                 YOU DO NOT NEED TO MODIFY CODE IN THIS FILE                #
+##############################################################################
 
 
 class HaveCakeProblem(BasePlanningProblem):
