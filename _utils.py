@@ -1,10 +1,19 @@
+import sys
+from pathlib import Path
 
-from itertools import product
-from timeit import default_timer as timer
+# Add both project root and lectures directory to path
+PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(PROJECT_ROOT / "lectures"))
 
-from aimacode.logic import associate
-from aimacode.search import InstrumentedProblem
 from aimacode.utils import expr
+from aimacode.planning import Action
+from aimacode.search import Node, InstrumentedProblem
+
+from collections import defaultdict
+from itertools import product
+from functools import lru_cache
+from timeit import default_timer as timer
 
 
 class PrintableProblem(InstrumentedProblem):
