@@ -150,17 +150,34 @@ The experiment script prints:
 - number of node expansions,
 - search time.
 
+You can run all problems (1-4) with selected search algorithms (3, 5, 9) directly like this:
+```bash
+$ pypy3 run_search.py -p 1 2 3 4 -s 3 5 9
+```
+
 Use this data to populate tables/figures for your **report**. For reproducible timing results, `pyperf` is recommended (as `timeit` can be unreliable for scripts):
 
 First, install `pyperf` using PyPy's pip if you haven't already:
 ```bash
 $ pypy3 -m pip install pyperf
 ```
-Then, run the benchmark (this translates `timeit -n1 -r3` to `pyperf` options for loops and runs per worker):
+
+For a quick timing check (one warm-up, one measured run on a single problem/search):
 ```bash
-# 3 runs (-n 3) of the script, with a single outer loop each (-l 1)
+$ pypy3 -m pyperf command -w 1 -n 1 -l 1 -- python run_search.py -p 1 -s 3
+```
+
+For a faster benchmark using `pyperf`'s fast mode (fewer warm-ups/samples across a subset of problems/searches):
+```bash
+$ pypy3 -m pyperf command --fast -- python run_search.py -p 1 2 -s 3 5
+```
+
+For a comprehensive benchmark (this is the most thorough but may take several minutes):
+```bash
 $ pypy3 -m pyperf command -n 3 -l 1 -- python run_search.py -p 1 2 3 4 -s 3 5 9
 ```
+
+Note: The full benchmark can take a significant amount of time to complete as it runs multiple problems with multiple search algorithms, each repeated several times by `pyperf`.
 
 ---
 
