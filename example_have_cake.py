@@ -1,4 +1,10 @@
+import sys
+from pathlib import Path
 
+# Add lectures directory to Python path
+sys.path.insert(0, str(Path(__file__).parent / "lectures"))
+
+# Now import from aimacode
 from aimacode.planning import Action
 from aimacode.search import (
     breadth_first_search, astar_search, depth_first_graph_search,
@@ -10,7 +16,6 @@ from _utils import (
     FluentState, encode_state, make_relations, run_search
 )
 from planning_problem import BasePlanningProblem
-
     ##############################################################################
     #                 YOU DO NOT NEED TO MODIFY CODE IN THIS FILE                #
     ##############################################################################
