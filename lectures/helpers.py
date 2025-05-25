@@ -11,7 +11,7 @@ from collections import deque
 united_states_map = mpimg.imread("map.png")  # US States & Capitals map
 
 # List of 30 US state capitals and corresponding coordinates on the map
-with open('capitals.json', 'r') as capitals_file:
+with open('data/capitals.json', 'r') as capitals_file:
     capitals = json.load(capitals_file)
 capitals_list = [(k, tuple(v)) for k, v in capitals.items()]
 
