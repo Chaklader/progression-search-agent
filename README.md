@@ -11,7 +11,7 @@ functions based on **planning graphs** to guide the search.
 
 ---
 
-#### Table of Contents
+##### Table of Contents
 
 1. [Project Overview](#project-overview)
 2. [Algorithms & Heuristics](#algorithms--heuristics)
@@ -27,7 +27,7 @@ functions based on **planning graphs** to guide the search.
 
 ---
 
-#### Project Overview
+##### Project Overview
 
 The agent's task is to find a sequence of actions that transports cargo between a set of airports while obeying domain
 constraints (loading/unloading cargo, flying planes, etc.). Each Air-Cargo problem instance differs in the number of
@@ -45,7 +45,7 @@ Your objectives in this repository are:
 
 ---
 
-#### Algorithms & Heuristics
+##### Algorithms & Heuristics
 
 The planner can be paired with any of the search or heuristic combinations below (indices refer to the menu in
 _run_search.py_):
@@ -181,7 +181,7 @@ Note: The full benchmark can take a significant amount of time to complete as it
 
 ---
 
-## Unit Tests
+##### Unit Tests
 
 Ensure your implementation passes all tests **before** running large experiments:
 
